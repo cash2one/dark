@@ -12,7 +12,7 @@ class DBClientSQLite(DBClient):
         '''
         打开数据库文件，建立连接。
 
-        @param dbname: 文件名，带路径（绝对路径和相对路径）。
+        @:parameter dbname: 文件名，带路径（绝对路径和相对路径）。
         '''
         # 把文件名转换为UTF-8编码，这对windows系统以及一些特殊的字符是有必要的。
         unicodeFilename = dbname.decode(sys.getfilesystemencoding())

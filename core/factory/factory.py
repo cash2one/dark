@@ -19,10 +19,10 @@ def factory(moduleName, className=None, *args, **kwargs):
     '''
     这个函数创建模块中类的一个实例。
 
-    @param moduleName: 模块名称。
-    @param className: 模块定义的类名称。
-    @param *args: 位置参数，实例化具体类时传递给构造函数。
-    @param **kwargs: 关键字参数，实例化具体类时传递给构造函数。
+    @:parameter moduleName: 模块名称。
+    @:parameter className: 模块定义的类名称。
+    @:parameter *args: 位置参数，实例化具体类时传递给构造函数。
+    @:parameter **kwargs: 关键字参数，实例化具体类时传递给构造函数。
     '''
     try:
         __import__(moduleName)

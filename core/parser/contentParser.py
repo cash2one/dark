@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'jason'
+
 import re
 import jieba
 import jieba.analyse
@@ -9,51 +10,50 @@ from core.exception.DarkException import DarkException
 from i18n import _
 
 
-class content_obj:
+class content_obj():
     def __init__(self):
         pass
 
     def compair_string_by_cos(self, content1, content2):
         """
         描述： 通过余弦定理去判断两个文本是否是相似的
-        :param content1: 传入的第一个文本
-        :param content2: 传入的第二个文本
+        @:parameter content1: 传入的第一个文本
+        @:parameter content2: 传入的第二个文本
         :return:rate，如果该值等于0.0则表示完全不相似
         """
-        _curContentWord = {}        # 记录当前文本中提取出来的词语
-        _accepteChars = re.compile(u"[\u4e00-\u9fa5]+|[a-zA-Z]+")     # 正则匹配接收到的词语是否为中文或者英文字符          # 正则匹配接受到的
+        _curContentWord = {}  # 记录当前文本中提取出来的词语
+        _accepteChars = re.compile(u"[\u4e00-\u9fa5]+|[a-zA-Z]+")  # 正则匹配接收到的词语是否为中文或者英文字符          # 正则匹配接受到的
         try:
-            segList = jieba.cut(content1, cut_all=True)      # 对内容1进行分词
+            segList = jieba.cut(content1, cut_all=True)  # 对内容1进行分词
             for item in segList:
                 if _accepteChars.match(item) is not None:
                     if item not in _curContentWord.keys():
-                        _curContentWord[item] = [1,0]
+                        _curContentWord[item] = [1, 0]
                     else:
                         _curContentWord[item][0] += 1
         except Exception, e:
             raise DarkException, _('Failed to cut the words. Exception: %(exception)s.' % {'exception': str(e)})
 
         try:
-            segList = jieba.cut(content2, cut_all=True)      # 对内容2进行分词
+            segList = jieba.cut(content2, cut_all=True)  # 对内容2进行分词
             for item in segList:
                 if _accepteChars.match(item) is not None:
                     if item not in _curContentWord.keys():
-                        _curContentWord[item] = [0,1]       # 注意此处，内容2的维度和内容一不同
+                        _curContentWord[item] = [0, 1]  # 注意此处，内容2的维度和内容一不同
                     else:
                         _curContentWord[item][1] += 1
         except Exception, e:
             raise DarkException, _('Failed to cut the words. Exception: %(exception)s.' % {'exception': str(e)})
 
-
         sum = 0
         sumA = 0
         sumB = 0
-        rate = 0.0      # 存储最终的cos值
+        rate = 0.0  # 存储最终的cos值
 
         for word in _curContentWord.values():
             sum += word[0] * word[1]
-            sumA += word[0]**2
-            sumB += word[1]**2
+            sumA += word[0] ** 2
+            sumB += word[1] ** 2
 
         try:
             rate = sum / (sqrt(sumA * sumB))
@@ -63,12 +63,11 @@ class content_obj:
             DarkException, _('Failed to get rate. Exception: %(exception)s.' % {'exception': str(e)})
         return rate
 
-
     def get_key_words_by_all(self, content, topK=5):
         """
         描述： 通过两种方式获取当前内容的关键字
-        :param content: 传入的文本
-        :param topK: 要提取关键字的个数, 此处应为用了两个方法，获得的关键字实际大于指定个数
+        @:parameter content: 传入的文本
+        @:parameter topK: 要提取关键字的个数, 此处应为用了两个方法，获得的关键字实际大于指定个数
         :return: tags获取的关键字列表
         """
         tags = []
@@ -80,7 +79,6 @@ class content_obj:
             DarkException, _('Failed to get keywords by two functions. Exception: %(exception)s.' % {'exception': str(e)})
         return list(tags)
 
-
     def get_key_words_by_TF_IDF(self, content, topK=5):
         tags = jieba.analyse.extract_tags(content, topK=topK)
         return tags
@@ -91,6 +89,7 @@ class content_obj:
 
     def convert_to_string(self, list, separator=','):
         return separator.join(list)
+
 
 if __name__ == '__main__':
     keyword = content_obj()

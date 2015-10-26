@@ -2,16 +2,15 @@
 # -*- coding:utf-8 -*-
 __author__ = 'jason'
 
-import sys,os
+import sys
 import MySQLdb
 from core.parser.contentParser import content_obj
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-in_sql = "insert into blacklist(keyword) select \'%s\' from DUAL where not exists (select keyword from blacklist where keyword = \'%s\')"
-
-fields = ("blId","keyword")
+in_sql = "insert into blacklist(keyword) select \'%s\' from DUAL where not exists "\
+         "(select keyword from blacklist where keyword = \'%s\')"
 
 #数据库方法
 class Db_Connect:

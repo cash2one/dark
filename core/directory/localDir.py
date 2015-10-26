@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 '''
 localDir.py
 
@@ -9,8 +11,8 @@ Date: 20150708
 '''
 import os
 
-
 DARK_LOCAL_DIR = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-3])
+
 
 def get_local_dir():
     '''

@@ -3,8 +3,9 @@
 __author__ = 'jason'
 
 from splinter import Browser
+from core.settings.settings import settings
+from core.output.logging import logger
 
-BROWSER_TYPE = 'phantomjs'
 DEBUG = True
 
 
@@ -14,19 +15,16 @@ class MyBrowser:
     """
 
     def __init__(self):
-        self.browser = Browser(BROWSER_TYPE)
-        if DEBUG:
-            print 'Splinter browser is init, and the browser type is %s!' % BROWSER_TYPE
+        self.browser = Browser(settings.get('BROWSER_TYPE'))
+        logger.info('Splinter browser is init!')
 
     def close(self):
         self.browser.quit()
-        if DEBUG:
-            print 'Splinter browser is close success!'
+        logger.info('Splinter browser is close success!')
 
     def visit(self, url):
-        if DEBUG:
-            print 'Splinter browser is visiting a url!'
         self.browser.visit(url)
+        logger.info('Splinter browser is visiting : %s' % url)
 
     def get_html(self):
         return self.browser.html
@@ -36,8 +34,6 @@ class MyBrowser:
 
     def reload(self):
         self.browser.reload()
-        if DEBUG:
-            print 'Splinter browser is reloading a url!'
 
 
 if __name__ == '__main__':

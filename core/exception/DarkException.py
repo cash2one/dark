@@ -20,19 +20,6 @@ class DarkException(Exception):
         return self.value
 
 
-class DarkManagerException(Exception):
-    """
-    描述： DarkManagerException类型异常，该类异常的引起原因为某个管理类中的某个方法抛出异常
-    """
-
-    def __init__(self, value):
-        Exception.__init__(self)
-        self.value = str(value)
-
-    def __str__(self):
-        return self.value
-
-
 class DarkMustStopException(Exception):
     """
     描述： DarkMustStopException类型异常，该类异常的引起后必须停止运行。

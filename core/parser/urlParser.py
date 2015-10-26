@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'jason'
 
 import copy
 import re
@@ -46,7 +45,7 @@ class url_object():
 
     def __init__(self, data, encoding='UTF8'):
         """
-        @param data: Either a string representing a URL or a 6-elems tuple
+        @:parameter data: Either a string representing a URL or a 6-elems tuple
             representing the URL components:
             <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
 
@@ -139,12 +138,12 @@ class url_object():
     def from_parts(cls, scheme, netloc, path, params,
                    qs, fragment, encoding='UTF8'):
         """
-        @param scheme: http/https
-        @param netloc: domain and port
-        @param path: directory
-        @param params: URL params
-        @param qs: query string
-        @param fragment: #fragments
+        @:parameter scheme: http/https
+        @:parameter netloc: domain and port
+        @:parameter path: directory
+        @:parameter params: URL params
+        @:parameter qs: query string
+        @:parameter fragment: #fragments
         @return: An instance of url_object.
 
         This is a "constructor" for the url_object class.
@@ -164,7 +163,7 @@ class url_object():
     @classmethod
     def from_url_object(cls, src_url_obj):
         '''
-        @param src_url: The url object to use as "template" for the new one
+        @:parameter src_url: The url object to use as "template" for the new one
         @return: An instance of url_object with the same data as original_url_object
 
         This is a "constructor" for the url_object class.
@@ -511,7 +510,7 @@ class url_object():
 
         For more information read RFC 1808 especially section 5.
 
-        @param relative: The relative url to add to the base url
+        @:parameter relative: The relative url to add to the base url
         @return: The joined URL.
 
         Examples:

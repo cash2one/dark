@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 '''
 homeDir.py
 
@@ -14,10 +16,9 @@ import datetime
 
 from core.directory.localDir import get_local_dir
 
+HOME_DIR = os.path.join(user.home,
+                        '.dark_' + str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')))
 
-HOME_DIR = os.path.join(user.home, 
-                        '.dark'+str(os.getpid())
-                        +str(datetime.datetime.now().microsecond))
 
 def get_home_dir():
     '''
@@ -26,6 +27,7 @@ def get_home_dir():
     @return: HOME_DIR。
     '''
     return HOME_DIR
+
 
 def create_home_dir():
     '''
@@ -40,14 +42,6 @@ def create_home_dir():
         except OSError:
             return False
 
-    # webroot目录
-    webroot = homeDir + os.path.sep + 'webroot'
-    if not os.path.exists(webroot):
-        try:
-            os.makedirs(webroot)
-        except OSError:
-            return False
-
     # profile目录
     profilesPath = homeDir + os.path.sep + 'profiles'
     defaultProfilesPath = get_local_dir() + os.path.sep + 'profiles' + os.path.sep
@@ -58,3 +52,6 @@ def create_home_dir():
             return False
 
     return True
+
+if __name__ == '__main__':
+    print get_home_dir()

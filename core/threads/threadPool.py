@@ -11,7 +11,6 @@ import Queue
 import threading
 import traceback
 
-from core.output.outputManager import om
 from i18n import _
 
 
@@ -25,7 +24,7 @@ class WorkThread(threading.Thread):
         threading.Thread.__init__(self, **kwds)
         self.setDaemon(1)
         self._tasksQueue = tasksQueue
-        om.debug(_('[threadPool] Init with task queue %(id)s.') % {'id':id(self._tasksQueue)})
+        #om.debug(_('[threadPool] Init with task queue %(id)s.') % {'id':id(self._tasksQueue)})
         self._dissmissed = threading.Event() # 线程是否结束运行的事件
         self._semaphoreCustomer = semaphoreCustomer # 任务队列消费者信号量
         self._semaphoreProducer = semaphoreProducer # 任务队列生产者信号量
@@ -41,27 +40,27 @@ class WorkThread(threading.Thread):
                     task = self._tasksQueue.get(timeout=1) # 阻塞1秒
                 except:
                     # 正常应该永远不会运行到此
-                    om.debug(_('[threadPool] Blocking at tasks queue get. Size: %(size)s.') 
-                              % {'size':str(self._tasksQueue.qsize())})
+                    #om.debug(_('[threadPool] Blocking at tasks queue get. Size: %(size)s.')
+                              #% {'size':str(self._tasksQueue.qsize())})
                     self._semaphoreCustomer.release()
                     continue
 
-                om.debug(_('[threadPool] Unblocking after tasks queue get.'))
-                om.debug(_('[threadPool] The tasks queue size for thread with id %(id)s is %(size)s.') 
-                          % {'id':str(id(self)), 'size':str(self._tasksQueue.qsize())})
+                #om.debug(_('[threadPool] Unblocking after tasks queue get.'))
+                #om.debug(_('[threadPool] The tasks queue size for thread with id %(id)s is %(size)s.')
+                          #% {'id':str(id(self)), 'size':str(self._tasksQueue.qsize())})
 
                 try:
                     task.callable(*task.args, **task.kwds)
                     self._tasksQueue.task_done()
                 except:
-                    om.error(_('[threadPool] The thread: %(thread)s raised an exception while running the task: %(callable)s') 
-                              % {'thread':self, 'callable':task.callable})
-                    om.error(_('[threadPool] Exception: %(exception)s.') % {'exception':traceback.format_exc()})
+                    #om.error(_('[threadPool] The thread: %(thread)s raised an exception while running the task: %(callable)s')
+                              #% {'thread':self, 'callable':task.callable})
+                    #om.error(_('[threadPool] Exception: %(exception)s.') % {'exception':traceback.format_exc()})
                     self._semaphoreProducer.release() # 生产者V操作
                 else:
                     self._semaphoreProducer.release() # 生产者V操作
 
-        om.debug(_('[threadPool] Ending!'))
+        #om.debug(_('[threadPool] Ending!'))
 
     def dismiss(self):
         '''
@@ -77,9 +76,9 @@ class WorkTask(object):
         '''
         构造函数。
 
-        @param callable: 可调用对象。
-        @param args: 可调用对象的位置参数。
-        @param kwds: 可调用对象的关键字参数。 
+        @:parameter callable: 可调用对象。
+        @:parameter args: 可调用对象的位置参数。
+        @:parameter kwds: 可调用对象的关键字参数。
         '''
         self.callable = callable
         self.args = args or []
@@ -97,8 +96,8 @@ class ThreadPool(object):
             self._semaphoreCustomer = threading.Semaphore(0) # 默认0
             self._semaphoreProducer = threading.Semaphore(self._queueSize) # 默认队列大小
             self._tasksQueue = Queue.Queue(self._queueSize)
-            om.debug(_('[threadPool] %(poolId)s init with tasks queue %(queueId)s.') 
-                      % {'poolId':id(self), 'queueId':id(self._tasksQueue)})
+            #om.debug(_('[threadPool] %(poolId)s init with tasks queue %(queueId)s.')
+                      #% {'poolId':id(self), 'queueId':id(self._tasksQueue)})
             self._workThreads = []
             self.createWorkThreads(self._poolSize)
             _class._doInit = False
@@ -122,8 +121,8 @@ class ThreadPool(object):
     def putWorkTask(self, task):
         if self._semaphoreProducer.acquire(): # 生产者P操作
             self._tasksQueue.put(task)
-            om.debug(_('[threadPool] Successfully added task to tasks queue. The queue size: %(size)s.') % 
-                         {'size':self._tasksQueue.qsize()})
+            #om.debug(_('[threadPool] Successfully added task to tasks queue. The queue size: %(size)s.') %
+                         #{'size':self._tasksQueue.qsize()})
             self._semaphoreCustomer.release() # 消费者V操作
 
     def join(self):

@@ -15,6 +15,7 @@ import shutil
 from core.settings.settings import settings
 from core.exception.DarkException import DarkException
 from core.directory.homeDir import get_home_dir, create_home_dir
+from core.directory.localDir import get_local_dir
 from i18n import _
 
 class Profile:
@@ -26,8 +27,8 @@ class Profile:
         '''
         构造函数。
 
-        @param profname: 文件名（可带路径）。
-        @param workdir: 工作目录名。
+        @:parameter profname: 文件名（可带路径）。
+        @:parameter workdir: 工作目录名。
         '''
         create_home_dir()
         # 默认的optionxform把option转换为小写，我们需要保持原样。
@@ -53,8 +54,8 @@ class Profile:
         '''
         返回profilename的绝对路径。
 
-        @param profilename: 文件名（可带路径）。
-        @param workdir: 工作目录名。
+        @:parameter profilename: 文件名（可带路径）。
+        @:parameter workdir: 工作目录名。
         @return: profile文件的绝对限定名称。
         @raise darkException: 如果没有profile被发现，抛出一个带有恰当描述消息的异常。
         '''
@@ -107,7 +108,7 @@ class Profile:
         '''
         拷贝profile配置文件的一个副本到copyProfileName。
 
-        @param copyProfileName: 目标拷贝文件名(可以带路径)。
+        @:parameter copyProfileName: 目标拷贝文件名(可以带路径)。
         @return: 成功拷贝，返回True。
         @raise darkException: 拷贝失败，抛出异常。
         '''
@@ -138,7 +139,7 @@ class Profile:
         '''
         保存修改到配置文件。
         
-        @param file_name: 配置文件名(可带路径)，默认为空。
+        @:parameter file_name: 配置文件名(可带路径)，默认为空。
         '''
         if not self._profileFileName:
             if not file_name:
@@ -178,8 +179,8 @@ class Profile:
         '''
         获取配置节点选项。
 
-        @param section: 配置节点（区域）名称。
-        @param configuraleInstance: 可配置实例对象。
+        @:parameter section: 配置节点（区域）名称。
+        @:parameter configuraleInstance: 可配置实例对象。
         @return: OptionList对象。
         '''
         optionList = configuraleInstance.getOptions()
@@ -215,5 +216,13 @@ class Profile:
 
         return None
 
+    def getLogType(self):
+        for section in self._config.sections():
+            if section == 'log':
+                for option in self._config.options(section):
+                    if option == 'isTextPlugin':
+                        return self._config.get(section, option)
 
-pf = Profile('conf.dark')
+        return None
+
+pf = Profile(get_local_dir() + os.path.sep + 'conf.dark')

@@ -8,7 +8,7 @@ Date: 20150925
 线程管理。
 '''
 from core.threads.threadPool import ThreadPool, WorkTask
-from core.profile.data.config import cf
+from core.settings.settings import settings
 
 
 class ThreadManager(object):
@@ -21,8 +21,8 @@ class ThreadManager(object):
 
     def _initPool(self):
         if not self._initialized:
-            self._maxThreads = cf.getData('maxThreads') or 5
-            self._queueSize = cf.getData('queueSize') or 200
+            self._maxThreads = settings.getint('THREAD_MAX') or 5
+            self._queueSize = settings.getint('QUEUE_SIZE') or 200
             self._threadPool = ThreadPool(self._queueSize, self._maxThreads)
             self._initialized = True
 

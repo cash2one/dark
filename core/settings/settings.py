@@ -6,8 +6,8 @@ from importlib import import_module
 
 import default_settings
 
-class SettingsAttribute(object):
 
+class SettingsAttribute(object):
     """Class for storing data related to settings attributes.
 
     This class is intended for internal usage, you should try Settings class
@@ -27,7 +27,6 @@ class SettingsAttribute(object):
 
 
 class Settings(object):
-
     def __init__(self, values=None):
         self.frozen = False
         self.attributes = {}
@@ -43,10 +42,6 @@ class Settings(object):
         return self[name] if self[name] is not None else default
 
     def getbool(self, name, default=False):
-        """
-        True is: 1, '1', True
-        False is: 0, '0', False, None
-        """
         return bool(int(self.get(name, default)))
 
     def getint(self, name, default=0):
@@ -103,29 +98,6 @@ class Settings(object):
         return copy
 
 
-class _DictProxy(MutableMapping):
-
-    def __init__(self, settings):
-        self.o = {}
-        self.settings = settings
-
-    def __len__(self):
-        return len(self.o)
-
-    def __getitem__(self, k):
-        return self.o[k]
-
-    def __setitem__(self, k, v):
-        self.settings.set(k, v)
-        self.o[k] = v
-
-    def __delitem__(self, k):
-        del self.o[k]
-
-    def __iter__(self, k, v):
-        return iter(self.o)
-
-
 def iter_default_settings():
     """Return the default settings as an iterator of (name, value) tuples"""
     for name in dir(default_settings):
@@ -134,7 +106,6 @@ def iter_default_settings():
 
 
 settings = Settings()
-
 
 if __name__ == "__main__":
     settings = Settings()

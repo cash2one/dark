@@ -5,10 +5,14 @@ __author__ = 'jason'
 import time
 import requests
 from requests.exceptions import ConnectionError, Timeout
+from socket import timeout
 from core.exception.DarkException import DarkException
+from core.output.logging import logger
 from lxml import html as HTML
 from i18n import _
+
 DEBUG = False
+
 
 class Requset:
     def __init__(self, url, retry_times=3):
@@ -27,20 +31,18 @@ class Requset:
         self.retry_http_code = ['500', '502', '503', '504', '400', '408']
 
         self.visitable = True
-        
+
         self.html = None
-        
 
     def run(self):
-        if DEBUG:
-            print 'Request is test to run url!'
-            starttime = time.time()
+
+        starttime = time.time()
         retry_flag = True
         retry_times = 0
         while retry_flag and retry_times < self.retry_times:
             try:
                 req = requests.get(self.url, headers=self.header, timeout=5)
-                #print req.encoding
+                # print req.encoding
                 if req.encoding == 'gb2312':
                     self.html = req.text
                 else:
@@ -53,16 +55,15 @@ class Requset:
                 retry_times += 1
             except Timeout:
                 retry_times += 1
+            except timeout:
+                retry_times += 1
             except Exception, e:
-                print '!!!!', type(e)
+                logger.error('Request run exception an Exception, and type is %s' % type(e))
                 retry_flag = False
         if retry_times >= self.retry_times:
             self.visitable = False
         endtime = time.time()
-        if DEBUG:
-            print '-'*20,
-            print ' Request run test time: %f' % (endtime-starttime),
-            print '-'*20
+        logger.debug('Request run finished, using %f seconds' % (endtime - starttime))
 
     def get_text(self):
         return self.html
@@ -75,14 +76,15 @@ class Requset:
                 doc = HTML.document_fromstring(text)
                 return doc
             except Exception, e:
-                print 'request.Requset.get_doc: %s' % e
+                raise DarkException, _('Requset can not get doc, Exception: %s' % e)
         return None
 
     def is_visiable(self):
         return self.visitable
 
+
 if __name__ == '__main__':
-    re = Requset('http://www.eoffcn.com/gk/221.html/', 3)
+    re = Requset('http://www.chinabank.com.cn/index/index.shtml', 3)
     re.run()
     print re.get_text()
     print re.get_doc()

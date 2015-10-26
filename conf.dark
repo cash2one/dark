@@ -1,6 +1,6 @@
 [profile]
-name=dark
-desc=dark scan是一款暗链扫描工具。
+name = dark
+desc = dark scan是一款暗链扫描工具。
 
 [db]
 type = mysql
@@ -8,11 +8,6 @@ user = root
 password = ly6521313
 db = url_detect
 
-[processpool]
-poolSize = 4
-queueSize = 6
-
 [log]
-logFileName = output.txt
-logFlushNum = 1
+isTextPlugin = False
 

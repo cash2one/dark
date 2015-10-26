@@ -24,27 +24,28 @@ def make_three_item_tuple(column, value, opreator='='):
 
 class DBItem(object):
     def __init__(self):
-        self.dbclient = DBClientMySql(**pf.getDbInfo())  # 通过配置文件设置当前数据库的user,password,db
+        self.dbClient = DBClientMySql(**pf.getDbInfo())  # 通过配置文件设置当前数据库的user,password,db
 
     def init(self):
-        self.dbclient.connect()
-        with self.dbclient._dbLock:
+        self.dbClient.connect()
+
+    def create_table_and_index(self):
+        with self.dbClient._dbLock:
             tablename = self.get_table_name()
             primarykey = self.get_primary_key_columns()
             index = self.get_index_columns()
             column = self.get_columns()
             try:
-                self.dbclient.createTable(tablename, column, primarykey)
-                self.dbclient.createIndex(tablename, index)
+                self.dbClient.createTable(tablename, column, primarykey)
+                self.dbClient.createIndex(tablename, index)
             except Exception, e:
-                raise DarkException, _(
-                    'Failed to create table or index. Exception: %(exception)s.' % {'exception': str(e)})
+                raise DarkException, _('Failed to create table or index. Exception: %(exception)s.' % {'exception': str(e)})
 
     def end(self):
         """
         完成操作
         """
-        self.dbclient.disconnect()
+        self.dbClient.disconnect()
 
     def set_table_name(self, table):
         self._DATA_TABLE = table
@@ -85,7 +86,7 @@ class BLItem(DBItem):
         if keywordsList:
             for i in range(len(keywordsList)):
                 searchData = [make_three_item_tuple(settings.get('BL_SEARCH_WORD'), keywordsList[i])]
-                if self.dbclient.find_data(self.get_table_name(), searchData):
+                if self.dbClient.find_data(self.get_table_name(), searchData):
                     return True
                 else:
                     continue
@@ -97,8 +98,8 @@ class BLItem(DBItem):
             for i in range(len(storeList)):
                 insertData = [make_two_item_tuple(settings.get('BL_STORE_WORD'), storeList[i])]
                 searchData = [make_three_item_tuple(settings.get('BL_STORE_WORD'), storeList[i])]
-                if not self.dbclient.get_data(self.get_table_name(), searchData):
-                    self.dbclient.insert_data(self.get_table_name(), insertData)
+                if not self.dbClient.get_data(self.get_table_name(), searchData):
+                    self.dbClient.insert_data(self.get_table_name(), insertData)
                 else:
                     pass
 
@@ -114,7 +115,7 @@ class WLItem(DBItem):
     def find_url_in(self, url):
         if url:
             searchData = [make_three_item_tuple(settings.get('WL_SEARCH_WORD'), url)]
-            if self.dbclient.find_data(self.get_table_name(), searchData):
+            if self.dbClient.find_data(self.get_table_name(), searchData):
                 return True
             else:
                 return False
@@ -126,7 +127,7 @@ class WLItem(DBItem):
             keys = settings.get('WL_STORE_WORD')
             insertData.append(make_two_item_tuple(keys[0], url))
             insertData.append(make_two_item_tuple(keys[1], title))
-            self.dbclient.insert_data(self.get_table_name(), insertData, True)
+            self.dbClient.insert_data(self.get_table_name(), insertData, True)
 
 
 class DTItem(DBItem):
@@ -137,14 +138,15 @@ class DTItem(DBItem):
         self._PRIMARY_KEY_COLUMNS = settings.get("DT_PRIMARY_KEY_COLUMNS")
         self._INDEX_COLUMNS = settings.get("DT_INDEX_COLUMNS")
 
-    def store_url_hidden_type_in(self, url, hidden, type):
+    def store_url_hidden_type_in(self, url, hidden, level, type):
         if url:
             insertData = []
             keys = settings.get('DT_STORE_WORD')
             insertData.append(make_two_item_tuple(keys[0], url))
             insertData.append(make_two_item_tuple(keys[1], hidden))
-            insertData.append(make_two_item_tuple(keys[2], type))
-            self.dbclient.insert_data(self.get_table_name(), insertData, False)
+            insertData.append(make_two_item_tuple(keys[2], level))
+            insertData.append(make_two_item_tuple(keys[3], type))
+            self.dbClient.insert_data(self.get_table_name(), insertData, False)
 
 
 blacklist = BLItem()

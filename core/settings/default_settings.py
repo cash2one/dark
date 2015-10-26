@@ -41,17 +41,18 @@ DT_DATA_TABLE = 'detectInfo'
 DT_COLUMNS = [
     ('dtId', 'INT AUTO_INCREMENT'),
     ('url', 'VARCHAR(100) NOT NULL'),
-    ('hiddenUrl', 'VARCHAR(767)'),
-    ('hiddenLevel', 'VARCHAR(5)')
+    ('hiddenUrl', 'VARCHAR(500)'),
+    ('hiddenLevel', 'VARCHAR(6)'),
+    ('hiddenType', 'VARCHAR(25)')
 ]
 
 DT_PRIMARY_KEY_COLUMNS = ('dtId',)
 
-DT_INDEX_COLUMNS = ('hiddenUrl', 'hiddenLevel')
+DT_INDEX_COLUMNS = ('hiddenUrl', 'hiddenLevel', 'hiddenType')
 
 DT_SEARCH_WORD = ''
 
-DT_STORE_WORD = ('url', 'hiddenUrl', 'hiddenLevel', )
+DT_STORE_WORD = ('url', 'hiddenUrl', 'hiddenLevel', 'hiddenType')
 
 
 # profile.py中的配置
@@ -82,3 +83,13 @@ SCROLLAMOUNT_MIN = 1000
 
 OVER_WIDTH = 5
 OVER_HEIGHT = 5
+
+# threadManager.py
+THREAD_MAX = 10
+QUEUE_SIZE = 200
+
+# textFile.py
+LOG_FILE = "/tmp/dark.log"
+
+# browser.py
+BROWSER_TYPE = 'phantomjs'

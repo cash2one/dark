@@ -43,7 +43,7 @@ class WhereHelper(object):
             self.sql()
         return tuple(self._values)
 
-    def _makePair(self, field, value, oper='=', conjunction='AND'):
+    def _makePair(self, field, value, oper='=', conjunction='and'):
         """Auxiliary method."""
         result = ' ' + conjunction + ' ' + field + ' ' + oper + ' %s'
         return (result, value)
@@ -54,11 +54,11 @@ class WhereHelper(object):
 
         >>> w = WhereHelper( [ ('field', '3', '=') ] )
         >>> w.sql()
-        ' WHERE field = %s'
+        ' where field = %s'
 
         >>> w = WhereHelper( [ ('field', '3', '='), ('foo', '4', '=') ] )
         >>> w.sql()
-        ' WHERE field = %s AND foo = %s'
+        ' where field = %s and foo = %s'
         >>>
         """
         result = ''
@@ -75,7 +75,7 @@ class WhereHelper(object):
                     self._values.append(value)
                     tmpWhere += sql
                 if tmpWhere:
-                    result += " AND (" + tmpWhere[len(oper) + 1:] + ")"
+                    result += " and (" + tmpWhere[len(oper) + 1:] + ")"
             else:
                 sql, value = self._makePair(cond[0], cond[1], cond[2])
                 self._values.append(value)
@@ -83,7 +83,7 @@ class WhereHelper(object):
         result = result[5:]
 
         if whereStr and result:
-            result = ' WHERE ' + result
+            result = ' where ' + result
 
         return result
 

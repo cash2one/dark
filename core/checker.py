@@ -3,7 +3,6 @@
 __author__ = 'jason'
 
 import re
-from core.parser.htmlParser import html_object
 from core.settings.settings import settings
 
 class Checker:
@@ -327,11 +326,11 @@ class Checker:
                             overFunName = re.search(r'(\w+)\(\)', elem.get('onmouseover'), re.IGNORECASE)
                             outFunName = re.search(r'(\w+)\(\)', elem.get('onmouseout'), re.IGNORECASE)
                             # 如果成功提取函数名，则调用函数查找，函数get_id_in_javascript可以获得当前函数名下所有的ID
-                            if overFunName:
+                            if overFunName is not None:
                                 matchOverList = self.htmlParser.get_id_in_javascript(overFunName.group(1))
                                 if len(matchOverList) and idStr in matchOverList:
                                     return False
-                            if outFunName:
+                            if outFunName is not None:
                                 matchOutList = self.htmlParser.get_id_in_javascript(outFunName.group(1))
                                 if len(matchOutList) and idStr in matchOutList:
                                     return False
@@ -345,10 +344,11 @@ class Checker:
                         else:
                             # 判断是否为javascript代码在<script>标签下的情况
                             clickFunName = re.search(r'(\w+)\(\)', elem.get('onclick'), re.IGNORECASE)
-                            matchClickList = self.htmlParser.get_id_in_javascript(clickFunName.group(1))
-                            if len(matchClickList) and idStr in matchClickList:
-                                    return False
-                            continue
+                            if clickFunName is not None:
+                                matchClickList = self.htmlParser.get_id_in_javascript(clickFunName.group(1))
+                                if len(matchClickList) and idStr in matchClickList:
+                                        return False
+                                continue
                     else:
                         continue
                 # 在他的兄弟结点，以及兄弟结点的子结点中查找是否存在onmouseover和onmouseout属性
@@ -371,11 +371,11 @@ class Checker:
                             # 判断是否为javascript代码在<script>标签下的情况
                             overFunName = re.search(r'(\w+)\(\)', elem.get('onmouseover'), re.IGNORECASE)
                             outFunName = re.search(r'(\w+)\(\)', elem.get('onmouseout'), re.IGNORECASE)
-                            if overFunName:
+                            if overFunName is not None:
                                 matchOverList = self.htmlParser.get_id_in_javascript(overFunName.group(1))
                                 if len(matchOverList) and idStr in matchOverList:
                                     return False
-                            if outFunName:
+                            if outFunName is not None:
                                 matchOutList = self.htmlParser.get_id_in_javascript(outFunName.group(1))
                                 if len(matchOutList) and idStr in matchOutList:
                                     return False
@@ -394,7 +394,7 @@ class Checker:
                             clickFunName = re.search(r'(\w+)\(\)', elem.get('onclick'), re.IGNORECASE)
                             if clickFunName is not None:
                                 matchClickList = self.htmlParser.get_id_in_javascript(clickFunName.group(1))
-                                if len(matchClickList) and idStr in matchClick:
+                                if len(matchClickList) and idStr in matchClickList:
                                     return False
                             continue
                     else:
