@@ -93,3 +93,7 @@ LOG_FILE = "/tmp/dark.log"
 
 # browser.py
 BROWSER_TYPE = 'phantomjs'
+
+# detect.py
+RETRY_TIMES_MAX = 5
+RANDOM_NUM = 3

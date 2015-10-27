@@ -11,3 +11,8 @@ db = url_detect
 [log]
 isTextPlugin = False
 
+[spider]
+path = /root/project/sinbot
+
+[spider_setting]
+path = /root/project/sinbot/settings

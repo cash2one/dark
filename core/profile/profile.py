@@ -225,4 +225,30 @@ class Profile:
 
         return None
 
+
+    def getProfileValue(self, sectionName, optionName, valueType='string'):
+        '''
+        获取配置文件指定section、option的值。
+
+        @param sectionName: 配置区域名称。
+        @param optionName: 配置选项名称。
+        @param valueType: 返回值类型，取值‘int’、‘string’、'list’
+        '''
+        for section in self._config.sections():
+            if section == sectionName:
+                for option in self._config.options(section):
+                    if option == optionName:
+                        if valueType == 'string':
+                            return self._config.get(section, option)
+                        elif valueType == 'int':
+                            return self._config.getint(section, option)
+                        else:
+                            aList = []
+                            for value in self._config.get(section, option).split(','):
+                                aList.append(value)
+                            return aList
+
+        return None
+
+
 pf = Profile(get_local_dir() + os.path.sep + 'conf.dark')

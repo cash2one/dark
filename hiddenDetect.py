@@ -3,6 +3,7 @@
 __author__ = 'jason'
 
 import time
+import sys
 from core.threads.threadManager import ThreadManager
 from core.detect import Detect
 from core.database.DBItem import detectResult, blacklist, whitelist
@@ -13,14 +14,40 @@ from core.output.textFile import fileLog
 from core.snapshot.snapshot import sp
 
 class hiddenlink_obj():
-    def __init__(self, urlList):
+    def __init__(self):
+        spider_path = pf.getProfileValue('spider', 'path')
+        spider_setting_path = pf.getProfileValue('spider_setting', 'path')
+        sys.path.append(spider_path)        # 将sinbot模块地址导入
+        sys.path.append(spider_setting_path)# 将sinbot_settings模块的地址导入
+
         self.resultHiddenlink = {}          # 用来保存最终的检测结果
-        self.urlList = urlList              # 传递进来需要进行检测的URL列表
+        self.urlList = []                   # 传递进来需要进行检测的URL列表
         self.curNum = 1                     # 统计当前检测的是第几条
         self.detectTM = ThreadManager()     # 线程管理
 
-    def init(self):
+    def init(self, target):
+
+        def get_url(list):
+            '''
+            描述： 将爬虫获取到的request列表中的url提取出来，并且格式化与去重复
+            :param list:
+            :return:
+            '''
+            tempList = []
+            for item in list:
+                url = item.url
+                if url and url[-1] == '/':
+                    url = url[:-1]
+                tempList.append(url)
+            return set(tempList)
+
         self.detectTM.setMaxThreads(10)     # 设置可以同时进行任务的个数
+
+        from sinbot import sinbot_start     # 引入sinbot_start方法
+        from settings.settings import settings  # 引入sinbot_settings方法
+        settings.set('DEPTH_LIMIT', '3')    # 设置检测层数
+        reqList = sinbot_start(target)      # 开始爬取结果
+        self.urlList = get_url(reqList)    # 将爬取到的url结果保存到列表中
 
         if pf.getLogType() == 'True':
             logger.setOutputPlugin(fileLog)
@@ -58,11 +85,8 @@ class hiddenlink_obj():
         logger.endLogging()
 
 if __name__ == '__main__':
-    f = open('./core/url.txt', 'r')
-    urlList = f.readlines()
-    f.close()
-    hidden = hiddenlink_obj(urlList)
-    hidden.init()
+    hidden = hiddenlink_obj()
+    hidden.init('http://www.kingboxs.com')
     hidden.run()
     hidden.finsh()
 
