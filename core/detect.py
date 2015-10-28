@@ -14,6 +14,7 @@ from core.settings.settings import settings
 from core.output.logging import logger
 from request import Requset
 from checker import Checker
+from i18n import _
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -79,19 +80,6 @@ class Detect():
         logger.info('Simple detect find %d urls may have problem!' % len(self.hiddenSet))
 
     '''
-    描述： 将要检测是否存在暗链的对象进行分组，减少检测次数
-    '''
-
-    def get_detection_object(self, elements):
-        for element in elements:
-            brotherList = self.htmlObj.get_all_brother_element(element, False)
-            for brother in brotherList:
-                if brother in elements:
-                    elements.remove(brother)
-                    # print 'remove: ' + brother.get('href') + ' in %s group!'%element.get('href')
-        return elements
-
-    '''
     描述：判断当前链接是否在白名单中
     '''
 
@@ -120,14 +108,24 @@ class Detect():
     def is_link_similer_detected_url(self):
 
         def conbine_list_to_new_string(list):
-            result = ''
-            for item in list:
-                if item is not None:
-                    result += item
-            return result
+            '''
+            描述： 将list中的string合并为一个string
+            @:parameter: list : 要进行合并的list
+            :return 合并后的字符串
+            '''
+            try:
+                result = ''.join(list)
+                return result
+            except Exception, e:
+                raise DarkException, _('Conbine list filed! Please check it! Exception: %s' % e)
+            return ''
 
-        detectString = conbine_list_to_new_string([self._curContent, self._curTitle, self._curKeys, self._curInfor])
-        curentString = conbine_list_to_new_string([self.title, self.metaKeys, self.metaInfor])
+        try:
+            detectString = conbine_list_to_new_string([self._curContent, self._curTitle, self._curKeys, self._curInfor])
+            curentString = conbine_list_to_new_string([self.title, self.metaKeys, self.metaInfor])
+        except DarkException, msg:
+            logger.error(msg)
+
         content = content_obj()
         try:
             rate = content.compair_string_by_cos(detectString, curentString)
@@ -330,7 +328,7 @@ class Detect():
 if __name__ == '__main__':
     from core.output.console import consoleLog
     logger.setOutputPlugin(consoleLog)
-    url = 'http://www.kingboxs.com'
+    url = 'http://www.songshancn.com'
     hdDetect = Detect(url)
     hdDetect.init_detect()
     hdDetect.evil_detect()

@@ -11,7 +11,7 @@ from core.profile.profile import pf
 from core.output.logging import logger
 from core.output.console import consoleLog
 from core.output.textFile import fileLog
-from core.snapshot.snapshot import sp
+from core.common import human_time
 
 class hiddenlink_obj():
     def __init__(self):
@@ -45,7 +45,7 @@ class hiddenlink_obj():
 
         from sinbot import sinbot_start     # 引入sinbot_start方法
         from settings.settings import settings  # 引入sinbot_settings方法
-        settings.set('DEPTH_LIMIT', '3')    # 设置检测层数
+        settings.set('DEPTH_LIMIT', '2')    # 设置检测层数, 此处设置为2表示3层，从0开始计数
         reqList = sinbot_start(target)      # 开始爬取结果
         self.urlList = get_url(reqList)    # 将爬取到的url结果保存到列表中
 
@@ -77,6 +77,7 @@ class hiddenlink_obj():
 
     def finsh(self):
         logger.info('Detect modules finished, now will be quit...')
+        logger.infor('Detect result: find %d url may have evil function!' % len(self.resultHiddenlink))
         # 关闭相关数据库的连接
         blacklist.end()
         whitelist.end()
@@ -86,7 +87,7 @@ class hiddenlink_obj():
 
 if __name__ == '__main__':
     hidden = hiddenlink_obj()
-    hidden.init('http://www.kingboxs.com')
+    hidden.init('http://www.sinotex.net')
     hidden.run()
     hidden.finsh()
 
