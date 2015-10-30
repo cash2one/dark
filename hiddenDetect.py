@@ -4,6 +4,7 @@ __author__ = 'jason'
 
 import time
 import sys
+import os
 from core.threads.threadManager import ThreadManager
 from core.detect import Detect
 from core.database.DBItem import detectResult, blacklist, whitelist
@@ -11,21 +12,26 @@ from core.profile.profile import pf
 from core.output.logging import logger
 from core.output.console import consoleLog
 from core.output.textFile import fileLog
+from core.settings.settings import settings
+from core.htmlfile.html import HtmlFile
 from core.common import human_time
 
+
 class hiddenlink_obj():
-    def __init__(self):
+    def __init__(self, url):
         spider_path = pf.getProfileValue('spider', 'path')
         spider_setting_path = pf.getProfileValue('spider_setting', 'path')
         sys.path.append(spider_path)        # 将sinbot模块地址导入
         sys.path.append(spider_setting_path)# 将sinbot_settings模块的地址导入
 
+        self.url = url                      # 用来保存当前检测的主页面的地址
+        # self.rootPath = os.path.dirname(os.path.realpath(__file__)) # 用来保存当前检测的位置
         self.resultHiddenlink = {}          # 用来保存最终的检测结果
         self.urlList = []                   # 传递进来需要进行检测的URL列表
         self.curNum = 1                     # 统计当前检测的是第几条
         self.detectTM = ThreadManager()     # 线程管理
 
-    def init(self, target):
+    def init(self):
 
         def get_url(list):
             '''
@@ -44,9 +50,9 @@ class hiddenlink_obj():
         self.detectTM.setMaxThreads(10)     # 设置可以同时进行任务的个数
 
         from sinbot import sinbot_start     # 引入sinbot_start方法
-        from settings.settings import settings  # 引入sinbot_settings方法
-        settings.set('DEPTH_LIMIT', '2')    # 设置检测层数, 此处设置为2表示3层，从0开始计数
-        reqList = sinbot_start(target)      # 开始爬取结果
+        from settings.settings import settings as st # 引入sinbot_settings方法
+        st.set('DEPTH_LIMIT', settings.getint('DEPTH_LIMIT'))    # 设置检测层数, 此处设置为2表示3层，从0开始计数
+        reqList = sinbot_start(self.url)      # 开始爬取结果
         self.urlList = get_url(reqList)    # 将爬取到的url结果保存到列表中
 
         if pf.getLogType() == 'True':
@@ -62,22 +68,44 @@ class hiddenlink_obj():
         hdDetect.init_detect()
         hdDetect.evil_detect()
         hdDetect.print_hiddenlink_result()
-        self.resultHiddenlink = dict(self.resultHiddenlink, **hdDetect.hiddenSet)
+        if len(hdDetect.hiddenSet):
+            self.resultHiddenlink[url] = hdDetect.hiddenSet
         endtime = time.time()
         self.curNum += 1
         logger.info('One detect task finished! Using %f seconds!' % (endtime-starttime))
 
     def run(self):
+        # 0. 设置检测的开始时间
+        startTime = time.time()
+        temp = time.localtime(startTime)
+        self.strStartTime= time.strftime('%Y-%m-%d %H:%M:%S',temp)
+
         for url in self.urlList:
             url = url.strip('\n')      # 格式化传入的url，存在\n会导致产生浏览器访问失败
             if url is not None:
-                self.detectTM.startTask(self.oneTask(url))
+                args = (url, )
+                self.detectTM.startTask(self.oneTask, args)
             else:
                 logger.error('No url need to detect, please check it!')
 
+        self.detectTM.join()
+        # 2. 设置检测结束的时间
+        endTime = time.time()
+        self.interval = human_time(endTime - startTime)         # 设置检测用时
+
+        # 3. 生成检测报告
+        logger.info('Detect running success! Now will make the detect report file!')
+        html_report = HtmlFile(self)
+        try:
+            html_report.genHtmlReport()
+        except Exception, msg:
+            logger.error('Make detect report file failed! Exception: %s.' % msg)
+
+        logger.info('Store detect report success!')
+
     def finsh(self):
         logger.info('Detect modules finished, now will be quit...')
-        logger.infor('Detect result: find %d url may have evil function!' % len(self.resultHiddenlink))
+        logger.info('Detect result: find %d url may have evil function!' % len(self.resultHiddenlink))
         # 关闭相关数据库的连接
         blacklist.end()
         whitelist.end()
@@ -86,8 +114,8 @@ class hiddenlink_obj():
         logger.endLogging()
 
 if __name__ == '__main__':
-    hidden = hiddenlink_obj()
-    hidden.init('http://www.sinotex.net')
+    hidden = hiddenlink_obj('http://www.kingboxs.com')
+    hidden.init()
     hidden.run()
     hidden.finsh()
 

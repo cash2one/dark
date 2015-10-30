@@ -4,6 +4,7 @@ __author__ = 'jason'
 
 from core.exception.DarkException import DarkException
 from i18n import _
+import os
 
 
 def human_time(time):

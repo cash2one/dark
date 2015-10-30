@@ -97,3 +97,7 @@ BROWSER_TYPE = 'phantomjs'
 # detect.py
 RETRY_TIMES_MAX = 5
 RANDOM_NUM = 3
+
+# hiddenDetect.py
+REPORT_PATH = '/tmp'
+DEPTH_LIMIT = 2
