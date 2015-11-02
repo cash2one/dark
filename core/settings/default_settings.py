@@ -54,6 +54,26 @@ DT_SEARCH_WORD = ''
 
 DT_STORE_WORD = ('url', 'hiddenUrl', 'hiddenLevel', 'hiddenType')
 
+# 检测结果入库信息
+RS_DATA_TABLE = 'monitor_statistic'
+
+RS_COLUMNS = [
+    ('ID', 'varchar(22) NOT NULL'),
+    ('RefSiteId', 'varchar(22)'),
+    ('ThreatName', 'varchar(128)'),
+    ('ThreatLevel', 'varchar(8)'),
+    ('ThreatSum', 'int(11)'),
+    ('StatisticTime', 'datetime'),
+    ('ReportName', 'varchar(128)')
+]
+
+RS_PRIMARY_KEY_COLUMNS = ('ID',)
+
+RS_INDEX_COLUMNS = ('ID', 'RefSiteId', 'ThreatName')
+
+RS_SEARCH_WORD = ''
+
+RS_STORE_WORD = ('ID', 'RefSiteId', 'ThreatName', 'ThreatLevel', 'ThreatSum', 'StatisticTime', 'ReportName')
 
 # profile.py中的配置
 DEFAULT_ENCODING = 'utf-8'
@@ -101,3 +121,5 @@ RANDOM_NUM = 3
 # hiddenDetect.py
 REPORT_PATH = '/tmp'
 DEPTH_LIMIT = 2
+THREAT_NAME = '暗链发现'
+THREAT_LEVEL = '高'

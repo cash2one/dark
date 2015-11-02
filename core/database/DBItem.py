@@ -148,11 +148,33 @@ class DTItem(DBItem):
             insertData.append(make_two_item_tuple(keys[3], type))
             self.dbClient.insert_data(self.get_table_name(), insertData, False)
 
+class RSItem(DBItem):
+    def __init__(self):
+        DBItem.__init__(self)
+        self._DATA_TABLE = settings.get("RS_DATA_TABLE")
+        self._COLUMNS = settings.get("RS_COLUMNS")
+        self._PRIMARY_KEY_COLUMNS = settings.get("RS_PRIMARY_KEY_COLUMNS")
+        self._INDEX_COLUMNS = settings.get("RS_INDEX_COLUMNS")
+
+    def store_url_hidden_report_in(self, id, refSiteId, threatName, threatLevel, threatSum, statisticTime, reportName):
+        insertData = []
+        keys = settings.get('RS_STORE_WORD')
+        insertData.append(make_two_item_tuple(keys[0], id))
+        insertData.append(make_two_item_tuple(keys[1], refSiteId))
+        insertData.append(make_two_item_tuple(keys[2], threatName))
+        insertData.append(make_two_item_tuple(keys[3], threatLevel))
+        insertData.append(make_two_item_tuple(keys[4], threatSum))
+        insertData.append(make_two_item_tuple(keys[5], statisticTime))
+        insertData.append(make_two_item_tuple(keys[6], reportName))
+        self.dbClient.insert_data(self.get_table_name(), insertData, False)
+
 
 blacklist = BLItem()
 whitelist = WLItem()
 detectResult = DTItem()
+detectReport = RSItem()
 
 blacklist.init()
 whitelist.init()
 detectResult.init()
+detectReport.init()

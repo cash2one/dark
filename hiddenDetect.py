@@ -4,10 +4,11 @@ __author__ = 'jason'
 
 import time
 import sys
+import datetime
 import os
 from core.threads.threadManager import ThreadManager
 from core.detect import Detect
-from core.database.DBItem import detectResult, blacklist, whitelist
+from core.database.DBItem import detectResult, blacklist, whitelist, detectReport
 from core.profile.profile import pf
 from core.output.logging import logger
 from core.output.console import consoleLog
@@ -15,15 +16,16 @@ from core.output.textFile import fileLog
 from core.settings.settings import settings
 from core.htmlfile.html import HtmlFile
 from core.common import human_time
-
+from core.utils.pkgenerator import PKgenerator
 
 class hiddenlink_obj():
-    def __init__(self, url):
+    def __init__(self, url, id):
         spider_path = pf.getProfileValue('spider', 'path')
         spider_setting_path = pf.getProfileValue('spider_setting', 'path')
         sys.path.append(spider_path)        # 将sinbot模块地址导入
         sys.path.append(spider_setting_path)# 将sinbot_settings模块的地址导入
 
+        self.id = id                        # 用来保存当前检测链接对应数据库中的ID
         self.url = url                      # 用来保存当前检测的主页面的地址
         # self.rootPath = os.path.dirname(os.path.realpath(__file__)) # 用来保存当前检测的位置
         self.resultHiddenlink = {}          # 用来保存最终的检测结果
@@ -97,11 +99,27 @@ class hiddenlink_obj():
         logger.info('Detect running success! Now will make the detect report file!')
         html_report = HtmlFile(self)
         try:
-            html_report.genHtmlReport()
+            report_path = html_report.genHtmlReport()
         except Exception, msg:
             logger.error('Make detect report file failed! Exception: %s.' % msg)
 
         logger.info('Store detect report success!')
+
+        # 4. 将检测结果写入数据库
+        threat_name = settings.get('THREAT_NAME')
+        threat_sum = len(self.resultHiddenlink)
+        threat_level = settings.get('THREAT_LEVEL')
+
+        if report_path is None:
+            logger.error('HTML maker get wrong report path! Please check it!')
+            report_part_path = None
+        else:
+            path_list = report_path.split('/')
+            report_part_path = path_list[-2] + '/' + path_list[-1]
+        stat_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if threat_sum != 0:
+            id = PKgenerator.getPrimaryKeyId()
+            detectReport.store_url_hidden_report_in(id, self.id, threat_name, threat_level, threat_sum ,stat_time, report_part_path)
 
     def finsh(self):
         logger.info('Detect modules finished, now will be quit...')
@@ -109,12 +127,14 @@ class hiddenlink_obj():
         # 关闭相关数据库的连接
         blacklist.end()
         whitelist.end()
+        detectReport.end()
         detectResult.end()
         # 关闭日志模块
         logger.endLogging()
 
 if __name__ == '__main__':
-    hidden = hiddenlink_obj('http://www.kingboxs.com')
+    url = 'http://www.baidu.com'
+    hidden = hiddenlink_obj(url, 0)
     hidden.init()
     hidden.run()
     hidden.finsh()

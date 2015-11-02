@@ -294,7 +294,7 @@ class Detect():
                 if _curFlag:
                     # 说明检测3次完毕，未检测到太多可疑的链接
                     pass
-                elif _middleNum != len(needToDetectList):
+                elif _middleNum != len(needToDetectList) and _curFlag:
                     # 说明包含疑似的暗链太多，需提出，并标记等级中
                     for element in suspectList:
                         url = element.get('href')
