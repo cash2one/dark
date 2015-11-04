@@ -13,6 +13,7 @@ import sys
 from core.output.logging import logger
 from core.settings.settings import settings
 from core.exception.DarkException import DarkException
+from core.parser.urlParser import url_object
 from datetime import datetime
 from i18n import _
 
@@ -20,10 +21,8 @@ from i18n import _
 class HtmlFile(object):
     def __init__(self, obj):
         self.obj = obj  # 加载要进行报告生成的组件名
-        if self.obj.url.find('http://') != -1:
-            self.target = self.obj.url.strip('http://')
-        else:
-            self.target = self.obj.url.strip('https://')
+        self.target = url_object(self.obj.url).getDomain
+
 
         root_path = os.path.dirname(os.path.realpath(__file__))  # 获取当前文件的工作目录
         self.reportPath = settings.get('REPORT_PATH')  # 设置报告生成的根目录
@@ -66,12 +65,12 @@ class HtmlFile(object):
                           u'<html xmlns="http://www.w3.org/1999/xhtml">\n'
             self._write_to_file(doctype_str)
             head_str = u'<head>\n' \
-                       u'\r<title>%s</title>\n' \
-                       u'\r<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n' \
-                       u'\r<STYLE TYPE="text/css">\n' % unicode(settings.get('HTML_TITLE'))
+                       u'\t<title>%s</title>\n' \
+                       u'\t<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n' \
+                       u'\t<STYLE TYPE="text/css">\n' % unicode(settings.get('HTML_TITLE'))
             self._write_to_file(head_str)
             self._write_to_file(main_style_file.read())
-            headend_str = u'\n\r</style>\n</head>\n'
+            headend_str = u'\n\t</style>\n</head>\n'
             self._write_to_file(headend_str)
             main_style_file.close()
             body_str = u'<body>\n'
@@ -173,7 +172,7 @@ class HtmlFile(object):
                             content = include_property[0]
                             level = include_property[1]
                             type = include_property[2]
-                            links_html += u'\t\t\t\t\t\t\t\t\t<li>链接：%s\t等级：%s\t类型：%s<\li>\n'
+                            links_html += u'\t\t\t\t\t\t\t\t\t<li>链接：%s\t内容：%s\t等级：%s\t类型：%s</li>\n' % (include_url, content, level, type)
 
                     div_c_item_str = u'\t\t\t\t\t\t<div class="c-item">\n' \
                                      u'\t\t\t\t\t\t\t<div class="c-h">\n' \
@@ -183,21 +182,20 @@ class HtmlFile(object):
                                      u'\t\t\t\t\t\t\t\t<dl>\n' \
                                      u'\t\t\t\t\t\t\t\t\t<dt>页面URL:</dt>\n' \
                                      u'\t\t\t\t\t\t\t\t\t<dd><a href="%s">发现"%s"存在暗链</a></dd>\n' \
-                                     u'\t\t\t\t\t\t\t\t<\dl>\n' \
+                                     u'\t\t\t\t\t\t\t\t</dl>\n' \
                                      u'\t\t\t\t\t\t\t\t<dl>\n' \
                                      u'\t\t\t\t\t\t\t\t\t<dt>严重等级：</dt>\n' \
                                      u'\t\t\t\t\t\t\t\t\t<dd><strong class="high">%s</strong>\n' \
-                                     u'\t\t\t\t\t\t\t\t<\dl>\n' \
+                                     u'\t\t\t\t\t\t\t\t</dl>\n' \
                                      u'\t\t\t\t\t\t\t\t<dl>\n' \
                                      u'\t\t\t\t\t\t\t\t\t<dt>恶意内容：</dt>\n' \
                                      u'\t\t\t\t\t\t\t\t\t<dd></dd>\n' \
-                                     u'\t\t\t\t\t\t\t\t<\dl>\n' \
+                                     u'\t\t\t\t\t\t\t\t</dl>\n' \
                                      u'\t\t\t\t\t\t\t\t<code class="quote">\n' \
                                      u'%s' \
                                      u'\t\t\t\t\t\t\t\t</code>\n' \
                                      u'\t\t\t\t\t\t\t</div>\n' \
-                                     u'\t\t\t\t\t\t</div>\n' % (k, hdurl_num, hd_url, settings.get('THREAT_LEVEL'), \
-                                                                include_url, content, level, type)
+                                     u'\t\t\t\t\t\t</div>\n' % (k, hdurl_num, hd_url, hd_url, settings.get('THREAT_LEVEL'), links_html)
                     self._write_to_file(div_c_item_str)
                     div_end_str = u'\t\t\t\t\t</div>\n' \
                                   u'\t\t\t\t</div>\n' \
