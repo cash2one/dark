@@ -1,0 +1,142 @@
+html, body {
+	background:#f0f0f0;
+}
+body {
+	font-family:"Microsoft YaHei", Arial, "SimSun", Verdana, serif, sans-serif;
+	font-size:10pt;
+}
+ul, li, ol, dl, dt, dd {
+	margin:0;
+	padding:0;
+}
+h1, h2, h3 {
+	font-weight:300;
+}
+a {
+	color:#06C;
+}
+a:hover {
+	text-decoration: none;
+	color: #F26060;
+}
+#wrapper {
+	margin: 3.5em;
+	min-width: 780px;
+	padding:3em;
+	background:#fff;
+	box-shadow: 0 0 52px #ccc;
+}
+#header { padding-top:4em;
+}
+#header h1 {
+	font-size:36px;
+	color:#06C;
+}
+#header ul {
+	background:#eee;
+	width:48em;
+	display:block;
+	padding:4px;
+	border-radius:12px;
+	text-align:center;
+}
+#header li {
+	display:inline;
+	padding:0 1em;
+	margin:0;
+}
+.m {
+	margin-bottom:2.4em;
+}
+.m-h {
+}
+.m-h h2:before {
+	content:"::::::";
+	color:#666;
+	margin-right:.5em;
+}
+.m-h h2:after {
+	content:"::::::::::::::::::::::::::";
+	color:#666;
+	margin-left:.5em;
+}
+.c {
+	border-radius:6px;
+	overflow:hidden;
+	border:1px solid #ddd;
+	background:#f8f8f8;
+	margin-bottom:1.2em;
+}
+.c-t {
+}
+.c-t dt {
+	padding:.4em .6em;
+	font-size:1.2em;
+	color: #06C;
+}
+.c-t dt strong:before {
+	content:"※";
+	margin-right:.5em;
+}
+.c-t dd {
+	background:#fff;
+	margin:.5em;
+	padding:1.5em;
+	font-size:0.9em;
+	border-radius:6px;
+}
+.c-t dd strong{ line-height:2.4em; font-size:1.2em;}
+.c-l {
+	padding:0 .5em;
+}
+.c-item {
+	background:#fff;
+	padding:.5em; margin-bottom:.5em;
+	border-radius:6px;
+}
+.c-h {
+	padding:8px;
+	color: #C30;
+}
+.c-h h3 {
+	margin:0;
+	padding:0;
+	font-size:1.1em;
+	line-height:100%;
+}
+.c-h h3:before {
+	content:"◆";
+	margin-right:.5em;
+}
+.c-b{ padding-left:1em}
+.c-b dl {
+	padding:.2em 1em;
+	margin-bottom: 1em;
+	font-size:.9em;
+}
+.c-b dt, .c-b dd {
+	display:inline; margin-right:2em;
+}
+.c-b dt {
+	width:6em;
+}
+.quote {
+	padding:1em;
+	background:#FFC;
+	clear:both;
+	display:block;
+	border:1px dotted #FC6;
+	border-radius:6px;
+	margin:0 1em;
+}
+/*
+.leak .c{ background:#FDCAAF;}
+.leak .c-t dt{ background-color: #FB9660;}
+*/
+#wrapper{ position:relative; z-index:auto;}
+.tt{ display:block; position:absolute; width:100%; top:0; background:#009772; left:0;}
+.tt p{ margin:1em 0 0 0; padding:.6em 2.6em; color:#fff; background: #4B7BC2;}
+.c-b dd strong{ padding:2px 1em; color:#fff; border-radius:6px;}
+.high{ background:#C30;}
+.middle{ background:#F90;}
+.low{ background:#FC0}
