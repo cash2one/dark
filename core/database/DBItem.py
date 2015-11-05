@@ -178,3 +178,4 @@ blacklist.init()
 whitelist.init()
 detectResult.init()
 detectReport.init()
+

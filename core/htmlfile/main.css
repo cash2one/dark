@@ -56,7 +56,7 @@ a:hover {
 	margin-right:.5em;
 }
 .m-h h2:after {
-	content:"::::::::::::::::::::::::::";
+	content:":::::::";
 	color:#666;
 	margin-left:.5em;
 }

@@ -93,7 +93,7 @@ class content_obj():
 
 if __name__ == '__main__':
     keyword = content_obj()
-    s = ''
+    s = '博彩公司'
     list1 = keyword.get_key_words_by_TF_IDF(s)
     print list1
     list2 = keyword.get_key_words_by_TextRank(s)

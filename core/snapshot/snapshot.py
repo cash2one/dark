@@ -3,55 +3,69 @@
 __author__ = 'jason'
 
 import os
-import datetime
+import codecs
 from core.exception.DarkException import DarkException
-from core.output.logging import logger
-from core.directory.localDir import get_local_dir
+from core.settings.settings import settings
+from core.parser.urlParser import url_object
 from i18n import _
-
-SNAPSHOT_DIR = os.path.join(get_local_dir() + os.path.sep \
-                            + str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')))
 
 
 class Snapshot():
-    def __init__(self):
-        self.snapshotDir = SNAPSHOT_DIR
-        self.create_snapshot_dir()
+    def __init__(self, url):
+        self.url = url  # 要加载快照生成快照的组件名
+        self.target = self.url.replace('/', '_')
+        self.root_target = url_object(self.url).getDomain
+        self.snapshot_path = settings.get('SNAPSHOT_PAHT')
 
-    def get_snapshot_dir(self):
-        return SNAPSHOT_DIR
+        self._file_name = self.target + '_snapshot.html'
+        self._file_path = os.path.join(self.snapshot_path, self._file_name)     # eg:/tmp/www.kingboxs.com_aaa_snapshot.html
 
-    def create_snapshot_dir(self):
-        '''
-        描述： 创建home目录。
-        @return: boolean
-        '''
-        if not os.path.exists(self.snapshotDir):
-            try:
-                os.makedirs(self.snapshotDir)
-            except OSError:
-                return False
-        return True
+        self._initialized = False  # 初始化标志
 
-    def store_snapshot(self, fileName, fileText):
-        filePath = self.snapshotDir + os.path.sep + fileName.replace('/', '_') + '.html'
+    def _init(self):
+        self._initialized = True
         try:
-            htmlFile = open(filePath, 'w')
-            htmlFile.write(fileText)
-            htmlFile.close()
+            self._file = codecs.open(self._file_path, "w", "utf-8", 'replace')
+        except IOError, io:
+            msg = 'Can\'t open snapshot file "' + os.path.abspath(self._file_path) + '" for writing'
+            msg += ': "%s".' % io
+            raise DarkException(msg)
         except Exception, e:
-            import traceback
-            raise DarkException, _('Store snapshot filed, place check it! Exception: %s' + traceback.format_exc())
-            # 输入日志
+            msg = 'Can\'t open snapshot file ' + self._file_path + ' for output.'
+            msg += ' Exception: "' + str(e) + '".'
+            raise DarkException(msg)
 
-sp = Snapshot()
+    def store_snapshot(self, content):
+        if not self._initialized:
+            self._init()
+            try:
+                self._file.write(content)
+            except Exception, e:
+                raise DarkException, _('Store Write html content to snapshot failed! Please check it! Exception: ', e)
+            finally:
+                self._file.close()
+        else:
+            self._file.close()
+
+        import shutil
+
+        dir = self.root_target
+        fin_dir = os.path.join(self.snapshot_path, dir)     # eg: /tmp/www.kingboxs.com
+        fin_sp_dir = os.path.join(fin_dir, 'snapshot')
+        fin_path = os.path.join(fin_sp_dir, self._file_name)
+
+        if not os.path.exists(fin_sp_dir):
+            os.makedirs(fin_sp_dir)
+
+        try:
+            shutil.move(self._file_path, fin_path)
+        except Exception, e:
+            raise DarkException, _('Move snapshot file to destination directory failed! Please check it! Exception: %s' % e)
 
 if __name__ == '__main__':
-    url = "http://www.baidu.com/index"
-    sp = Snapshot()
-    dirs = os.listdir(get_local_dir())
-    for dir in dirs:
-        print dir
-    for i in range(10):
-        print i
-    sp.store_snapshot('www.baidu.com/index', 'this is baidu, test')
+    url = 'http://www.kingboxs.com/index.php?case=archive&act=search'
+    sp = Snapshot(url)
+    sp.store_snapshot('aaa')
+    url2 = 'http://www.kingboxs.com/index.php?case=special&act=show&spid=1'
+    sp2 = Snapshot(url2)
+    sp2.store_snapshot('aaa')

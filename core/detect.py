@@ -4,7 +4,7 @@ __author__ = 'jason'
 
 import time
 import sys
-from core.snapshot.snapshot import sp
+from core.snapshot.snapshot import Snapshot
 from core.database.DBItem import blacklist, whitelist, detectResult
 from core.parser.htmlParser import html_object
 from core.parser.urlParser import url_object
@@ -311,10 +311,10 @@ class Detect():
     def store_detect_snapshot(self):
         if len(self.hiddenSet):
             # 保存快照
-            fileName = self.url.strip('http://')
             fileText = self.htmlObj.html
             try:
-                sp.store_snapshot(fileName, fileText)
+                sp = Snapshot(self.url)
+                sp.store_snapshot(fileText)
             except DarkException, msg:
                 logger.error(msg)
             # 将检测结果保存到数据库中
@@ -328,7 +328,7 @@ class Detect():
 if __name__ == '__main__':
     from core.output.console import consoleLog
     logger.setOutputPlugin(consoleLog)
-    url = 'http://www.songshancn.com'
+    url = 'http://www.kingboxs.com/index.php?case=archive&act=search'
     hdDetect = Detect(url)
     hdDetect.init_detect()
     hdDetect.evil_detect()

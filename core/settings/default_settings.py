@@ -118,8 +118,14 @@ BROWSER_TYPE = 'phantomjs'
 RETRY_TIMES_MAX = 5
 RANDOM_NUM = 3
 
+# snapshot.py
+SNAPSHOT_PAHT = '/tmp'
+
 # hiddenDetect.py
 REPORT_PATH = '/tmp'
 DEPTH_LIMIT = 2
 THREAT_NAME = '暗链发现'
 THREAT_LEVEL = '高'
+
+# html.py
+HTML_TITLE = 'SANGFOR - WEB应用安全扫描报告'

@@ -5,7 +5,6 @@ __author__ = 'jason'
 import time
 import sys
 import datetime
-import os
 from core.threads.threadManager import ThreadManager
 from core.detect import Detect
 from core.database.DBItem import detectResult, blacklist, whitelist, detectReport
@@ -98,6 +97,7 @@ class hiddenlink_obj():
         # 3. 生成检测报告
         logger.info('Detect running success! Now will make the detect report file!')
         html_report = HtmlFile(self)
+        report_path = None
         try:
             report_path = html_report.genHtmlReport()
         except Exception, msg:
@@ -133,7 +133,7 @@ class hiddenlink_obj():
         logger.endLogging()
 
 if __name__ == '__main__':
-    url = 'http://www.baidu.com'
+    url = 'http://www.kingboxs.com'
     hidden = hiddenlink_obj(url, 0)
     hidden.init()
     hidden.run()
