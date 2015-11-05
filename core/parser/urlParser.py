@@ -1158,5 +1158,5 @@ class url_object():
 
 
 if __name__ == "__main__":
-    ou = url_object('')
-    print ou.getRootDomain
+    ou = url_object('http://www.baidu.com/index/index.html')
+    print ou.getDomain

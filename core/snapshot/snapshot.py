@@ -15,7 +15,7 @@ class Snapshot():
         self.url = url  # 要加载快照生成快照的组件名
         self.target = self.url.replace('/', '_')
         self.root_target = url_object(self.url).getDomain
-        self.snapshot_path = settings.get('SNAPSHOT_PAHT')
+        self.snapshot_path = settings.get('SNAPSHOT_PATH')
 
         self._file_name = self.target + '_snapshot.html'
         self._file_path = os.path.join(self.snapshot_path, self._file_name)     # eg:/tmp/www.kingboxs.com_aaa_snapshot.html

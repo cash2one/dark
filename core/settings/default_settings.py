@@ -119,7 +119,7 @@ RETRY_TIMES_MAX = 5
 RANDOM_NUM = 3
 
 # snapshot.py
-SNAPSHOT_PAHT = '/tmp'
+SNAPSHOT_PATH = '/tmp'
 
 # hiddenDetect.py
 REPORT_PATH = '/tmp'
