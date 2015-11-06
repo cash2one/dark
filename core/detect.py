@@ -213,6 +213,9 @@ class Detect():
                 logger.error('Evil detect get random element filed! Please check it! Exception: %s' % e)
             return randomList
 
+        def formart_string(string):
+            return string.strip().strip('\r\n')
+
         self.hidden_behavior_detect()
 
         if len(self.suspectedSet):
@@ -232,7 +235,7 @@ class Detect():
                     while _curFlag and _detectTime < len(needToDetectList):
                         for element in needToDetectList:
                             _curUrl = element.get('href')
-                            self._curContent = element.text if element.text else ''   # 提取疑似对象的文本内容，存在则获取，不存在则置为空
+                            self._curContent = formart_string(element.text) if element.text else ''   # 提取疑似对象的文本内容，存在则获取，不存在则置为空
                             logger.info('Start evil detect and url is: %s' % _curUrl)
                             # 0.对其根域名进行白名单检测，如果在白名单中，则pass
                             if self.is_link_in_white_list(_curUrl):
@@ -298,13 +301,13 @@ class Detect():
                     # 说明包含疑似的暗链太多，需提出，并标记等级中
                     for element in suspectList:
                         url = element.get('href')
-                        typeTuple = (element.text, 'Middle', suspectType)
+                        typeTuple = (self._curContent, 'Middle', suspectType)
                         self.insert_hiddenlink_into_set(url, typeTuple)
                 else:
                     # 说明包含暗链，可以确定，标记等级高
                     for element in suspectList:
                         url = element.get('href')
-                        typeTuple = (element.text, 'High', suspectType)
+                        typeTuple = (self._curContent, 'High', suspectType)
                         self.insert_hiddenlink_into_set(url, typeTuple)
         self.store_detect_snapshot()
 

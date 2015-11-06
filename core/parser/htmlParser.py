@@ -11,6 +11,7 @@ from core.exception.DarkException import DarkException
 from core.settings.settings import settings
 from core.output.logging import logger
 from lxml import html as HTML
+from bs4 import BeautifulSoup
 from i18n import _
 
 
@@ -57,6 +58,7 @@ class html_object():
         logger.info('Splinter loading a url using %f seconds' % (endtime - starttime))
         try:
             html = browser.get_html()  # 获取到当前页面的源码，貌似下面的浏览器没捕获异常
+            html = BeautifulSoup(html, 'lxml').prettify()       # 将获取到的HTML进行格式化
             self.html = html
         except Exception, e:
             raise DarkException, _('Failed to get html by using browser. Exception: %(exception)s.' % {'exception': str(e)})
@@ -352,7 +354,7 @@ if __name__ == '__main__':
     logger.setOutputPlugin(consoleLog)
     url = "http://www.dtzwdt.gov.cn/"
     htObj = html_object(url)
-    print htObj.get_html_title_by_doc(htObj.doc)
+    print htObj.get_detect_html
     # htObj.set_paresr_doc()
 
     # aList = htObj.get_a_tag_link_list()

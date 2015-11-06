@@ -14,6 +14,7 @@ from core.output.logging import logger
 from core.settings.settings import settings
 from core.exception.DarkException import DarkException
 from core.parser.urlParser import url_object
+from core.directory.localDir import get_local_dir
 from datetime import datetime
 from i18n import _
 
@@ -226,12 +227,12 @@ class HtmlFile(object):
 
         typestr = '恶意内容扫描报告'
 
-        dir = self.target
-        fin_dir = os.path.join(self.reportPath, dir)
-        fin_path = os.path.join(fin_dir, datetimestrf + '_' + typestr + '.html')
+        final_report_path = get_local_dir() +os.path.sep + 'reports' + os.path.sep
+        final_name = self.target + '_' + datetimestrf+ '_' + typestr + '.html'
+        fin_path = os.path.join(final_report_path, final_name)
 
-        if not os.path.exists(fin_dir):
-            os.mkdir(fin_dir)
+        if not os.path.exists(final_report_path):
+            os.mkdir(final_report_path)
 
         shutil.move(self._file_path, fin_path)
 

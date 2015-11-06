@@ -7,30 +7,30 @@ import sys
 import datetime
 from core.threads.threadManager import ThreadManager
 from core.detect import Detect
-from core.database.DBItem import detectResult, blacklist, whitelist, detectReport
+from core.database.DBItem import detectResult, blacklist, whitelist, detectReport, monitorSites
 from core.profile.profile import pf
 from core.output.logging import logger
-from core.output.console import consoleLog
-from core.output.textFile import fileLog
 from core.settings.settings import settings
 from core.htmlfile.html import HtmlFile
 from core.common import human_time
 from core.utils.pkgenerator import PKgenerator
+from core.exception.DarkException import DarkException
 
 class hiddenlink_obj():
-    def __init__(self, url, id):
+    def __init__(self, url):
         spider_path = pf.getProfileValue('spider', 'path')
         spider_setting_path = pf.getProfileValue('spider_setting', 'path')
         sys.path.append(spider_path)        # 将sinbot模块地址导入
         sys.path.append(spider_setting_path)# 将sinbot_settings模块的地址导入
 
-        self.id = id                        # 用来保存当前检测链接对应数据库中的ID
         self.url = url                      # 用来保存当前检测的主页面的地址
         # self.rootPath = os.path.dirname(os.path.realpath(__file__)) # 用来保存当前检测的位置
         self.resultHiddenlink = {}          # 用来保存最终的检测结果
         self.urlList = []                   # 传递进来需要进行检测的URL列表
-        self.curNum = 1                     # 统计当前检测的是第几条
+        self.curNum = 0                     # 统计当前检测的是第几条
         self.detectTM = ThreadManager()     # 线程管理
+
+
 
     def init(self):
 
@@ -56,13 +56,10 @@ class hiddenlink_obj():
         reqList = sinbot_start(self.url)      # 开始爬取结果
         self.urlList = get_url(reqList)    # 将爬取到的url结果保存到列表中
 
-        if pf.getLogType() == 'True':
-            logger.setOutputPlugin(fileLog)
-        else:
-            logger.setOutputPlugin(consoleLog)
         logger.info('Detect modules complete initialization...')
 
     def oneTask(self, url):
+        self.curNum += 1        # 每执行一个任务，则将当前的任务数目+1
         logger.info('One detect task is running(%d/%d), detect url is : %s' % (self.curNum, len(self.urlList), url))
         starttime = time.time()
         hdDetect = Detect(url)
@@ -72,7 +69,6 @@ class hiddenlink_obj():
         if len(hdDetect.hiddenSet):
             self.resultHiddenlink[url] = hdDetect.hiddenSet
         endtime = time.time()
-        self.curNum += 1
         logger.info('One detect task finished! Using %f seconds!' % (endtime-starttime))
 
     def run(self):
@@ -119,23 +115,38 @@ class hiddenlink_obj():
         stat_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if threat_sum != 0:
             id = PKgenerator.getPrimaryKeyId()
-            detectReport.store_url_hidden_report_in(id, self.id, threat_name, threat_level, threat_sum ,stat_time, report_part_path)
+            try:
+                ref_id = monitorSites.get_id_by_url_out(self.url)
+            except DarkException, msg:
+                logger.error(msg)
+            else:
+                detectReport.store_url_hidden_report_in(id, ref_id, threat_name, threat_level, threat_sum ,stat_time, report_part_path)
 
     def finsh(self):
         logger.info('Detect modules finished, now will be quit...')
         logger.info('Detect result: find %d url may have evil function!' % len(self.resultHiddenlink))
-        # 关闭相关数据库的连接
-        blacklist.end()
-        whitelist.end()
-        detectReport.end()
-        detectResult.end()
         # 关闭日志模块
-        logger.endLogging()
 
 if __name__ == '__main__':
+    from core.output.console import consoleLog
+    from core.output.textFile import fileLog
+
+        # 设置日志模块
+    if pf.getLogType() == 'True':
+        logger.setOutputPlugin(fileLog)
+    else:
+        logger.setOutputPlugin(consoleLog)
+
+
     url = 'http://www.kingboxs.com'
-    hidden = hiddenlink_obj(url, 0)
+    hidden = hiddenlink_obj(url)
     hidden.init()
     hidden.run()
     hidden.finsh()
 
+     # 关闭相关数据库的连接
+    blacklist.end()
+    whitelist.end()
+    detectReport.end()
+    detectResult.end()
+    logger.endLogging()

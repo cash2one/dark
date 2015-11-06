@@ -23,7 +23,7 @@ class WorkThread(threading.Thread):
     '''
     def __init__(self, tasksQueue, semaphoreCustomer, semaphoreProducer, **kwds):
         threading.Thread.__init__(self, **kwds)
-        self.setDaemon(1)
+        self.setDaemon(True)
         self._tasksQueue = tasksQueue
         #logger.debug(_('[threadPool] Init with task queue %(id)s.') % {'id':id(self._tasksQueue)})
         self._dissmissed = threading.Event() # 线程是否结束运行的事件

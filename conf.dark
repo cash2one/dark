@@ -12,7 +12,7 @@ db = url_detect
 isTextPlugin = False
 
 [spider]
-path = /root/project/sinbot
+path = /root/project/leobot
 
 [spider_setting]
-path = /root/project/sinbot/settings
+path = /root/project/leobot/settings

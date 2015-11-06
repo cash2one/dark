@@ -75,6 +75,15 @@ RS_SEARCH_WORD = ''
 
 RS_STORE_WORD = ('ID', 'RefSiteId', 'ThreatName', 'ThreatLevel', 'ThreatSum', 'StatisticTime', 'ReportName')
 
+
+# 站点信息数据库
+MS_DATA_TABLE = 'monitor_sites'
+
+MS_INDEX_COLUMNS = ('id', 'SiteUrl')
+
+MS_SEARCH_WORD = 'SiteUrl'
+
+
 # profile.py中的配置
 DEFAULT_ENCODING = 'utf-8'
 
@@ -123,7 +132,7 @@ SNAPSHOT_PATH = '/tmp'
 
 # hiddenDetect.py
 REPORT_PATH = '/tmp'
-DEPTH_LIMIT = 2
+DEPTH_LIMIT = 1
 THREAT_NAME = '暗链发现'
 THREAT_LEVEL = '高'
 

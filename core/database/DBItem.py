@@ -39,7 +39,8 @@ class DBItem(object):
                 self.dbClient.createTable(tablename, column, primarykey)
                 self.dbClient.createIndex(tablename, index)
             except Exception, e:
-                raise DarkException, _('Failed to create table or index. Exception: %(exception)s.' % {'exception': str(e)})
+                raise DarkException, _(
+                    'Failed to create table or index. Exception: %(exception)s.' % {'exception': str(e)})
 
     def end(self):
         """
@@ -148,6 +149,7 @@ class DTItem(DBItem):
             insertData.append(make_two_item_tuple(keys[3], type))
             self.dbClient.insert_data(self.get_table_name(), insertData, False)
 
+
 class RSItem(DBItem):
     def __init__(self):
         DBItem.__init__(self)
@@ -169,13 +171,32 @@ class RSItem(DBItem):
         self.dbClient.insert_data(self.get_table_name(), insertData, False)
 
 
+class MSItem(DBItem):
+    def __init__(self):
+        DBItem.__init__(self)
+        self._DATA_TABLE = settings.get("MS_DATA_TABLE")
+        self._INDEX_COLUMNS = settings.get("MS_INDEX_COLUMNS")
+
+    def get_id_by_url_out(self, url):
+        if url:
+            searchData = [make_three_item_tuple(settings.get('MS_SEARCH_WORD'), url)]
+            result = self.dbClient.get_data(self.get_table_name(), searchData)
+            return str(result[1])
+        else:
+            raise DarkException, _('None id searched by url! Please check it!')
+
+
 blacklist = BLItem()
 whitelist = WLItem()
 detectResult = DTItem()
 detectReport = RSItem()
+monitorSites = MSItem()
 
 blacklist.init()
 whitelist.init()
 detectResult.init()
 detectReport.init()
+monitorSites.init()
 
+if __name__ == '__main__':
+    monitorSites.get_id_by_url_out('http://www.kingboxs.com')

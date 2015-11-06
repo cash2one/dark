@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import console
-from textFile import fileLog
 
 import time
 import Queue
@@ -25,6 +23,7 @@ def start_thread_on_demand(func):
         return func(*args, **kwds)
     return od_wrapper
 
+
 class Logger(threading.Thread):
     """
     日志模块，输出程序产生的debug,info,error,notice日志信息
@@ -41,7 +40,7 @@ class Logger(threading.Thread):
         #threading.Thread.__init__(self)
         super(Logger, self).__init__()
         self.inQueue = Queue.Queue()
-        self.running = threading.Event()
+        self.running = threading.Event()       # 工厂化的线程事件，可通过set方法去设置管理标志为True，而用clear方法设置管理标志为False
         self.running.set()
 
     def _addToQueue(self, *args):
@@ -95,7 +94,7 @@ class Logger(threading.Thread):
 
         while self.running.isSet():
             time.sleep(1)
-        self.outputPlugin.close()
+        self.finOutputPlugin()       # 关闭一些必要的插件句柄，如file.close等
 
     def run(self):
         '''
@@ -104,16 +103,15 @@ class Logger(threading.Thread):
         '''
         # 依次从队列中取出信息进行操作，直到队列中读取的信息为-1，表示队列中没有信息
         while True:
-            work_unit = self.inQueue.get()
+            work_unit = self.inQueue.get()      # 获取一个任务单元
 
             if work_unit == POISON_PILL:
-                self.running.clear()
+                self.running.clear()            # 当任务都执行完成的时候关闭任务管理
                 break
 
             else:
-                self._callOutputAction(work_unit)
-
-                self.inQueue.task_done()
+                self._callOutputAction(work_unit)   # 当存在任务时候，调用任务执行输出
+                self.inQueue.task_done()            # 表明当前任务的完成
 
     @start_thread_on_demand
     def __getattr__(self, method):
@@ -121,19 +119,18 @@ class Logger(threading.Thread):
         返回函数_add_to_queue（'debug',...）
         """
         if method in self.methods:
+            # 偏函数，相当于常见一个method方法的任务去加入queue。
+            # eg: method = debug, 则相当于 addToQueue(debug)
+            # eg: method = info, 则相当与addToQueue(info)
             return functools.partial(self._addToQueue, method)
         else:
             raise AttributeError("'Logger' object has no attribute '%s'"
                                  % method)
 
 logger = Logger()
-#logger.setOutputPlugin(filelog)
 
 if __name__ == '__main__':
     import random
-
-    logger.setOutputPlugin(fileLog)
-
     for i in range(1, 60):
         t = random.randrange(10, 100, 2)
         logger.debug("test %d" %t)
