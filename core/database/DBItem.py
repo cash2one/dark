@@ -197,6 +197,7 @@ whitelist.init()
 detectResult.init()
 detectReport.init()
 monitorSites.init()
-
+detectResult.create_table_and_index()
 if __name__ == '__main__':
     monitorSites.get_id_by_url_out('http://www.kingboxs.com')
+

@@ -193,25 +193,14 @@ class Profile:
             else:
                 optionList[option].value = value # 设置option对象value属性。
 
-    def getDbType(self):
-        '''
-        获取数据库类型。
-        '''
+    def getDbUserInfo(self):
         for section in self._config.sections():
-            if section == 'db':
-                for option in self._config.options(section):
-                    if option == 'type':
-                        return self._config.get(section, option)
-
-        return None
-
-    def getDbInfo(self):
-        for section in self._config.sections():
-            if section == 'db':
+            if section == 'dbuser':
                 result = []
                 for key, value in self._config.items(section):
-                    if key != 'type':
-                        result.append((key, value))
+                    if key == 'port':
+                        value = int(value)
+                    result.append((key, value))
                 return dict(result)
 
         return None

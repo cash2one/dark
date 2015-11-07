@@ -3,10 +3,17 @@ name = dark
 desc = dark scan是一款暗链扫描工具。
 
 [db]
-type = mysql
+mincached = 1
+maxcached = 20
+charset= utf8
+
+[dbuser]
+host = localhost
+port = 3306
 user = root
-password = ly6521313
+passwd = ly6521313
 db = url_detect
+
 
 [log]
 isTextPlugin = False
