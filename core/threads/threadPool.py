@@ -52,8 +52,8 @@ class WorkThread(threading.Thread):
 
                 try:
                     task.callable(*task.args, **task.kwds)
-                except:
-                    print task
+                except Exception, e:
+                    print e
                     #logger.error(_('[threadPool] The thread: %(thread)s raised an exception while running the task: %(callable)s.')
                               #% {'thread':self, 'callable':task.callable})
                     #logger.error(_('[threadPool] Exception: %(exception)s.') % {'exception':traceback.format_exc()})

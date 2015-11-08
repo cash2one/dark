@@ -44,10 +44,12 @@ def store_url_hidden_type_to_detect_info(url, hidden, level, type):
     else:
         raise DarkException, _('Error string give from store url hidden type to detect info function! Please check it!')
 
-def store_url_hidden_report_in_monitor_statistic(id, ref_id, threat_name, threat_level, threat_sum ,stat_time, report_part_path):
+
+def store_url_hidden_report_in_monitor_statistic(id, ref_id, threat_name, threat_level, threat_sum, stat_time,
+                                                 report_part_path):
     sql = 'insert into monitor_statistic(ID, RefSiteId, ThreatName, ThreatLevel, ThreatSum, StatisticTime, ReportName) ' \
           'values(%s, %s, %s, %s, %s, %s, %s)'
-    param = (id, ref_id, threat_name, threat_level, threat_sum ,stat_time, report_part_path)
+    param = (id, ref_id, threat_name, threat_level, threat_sum, stat_time, report_part_path)
     sqlMg.insert_one(sql, param)
     sqlMg.end()
 
@@ -62,14 +64,38 @@ def get_id_from_monitor_sites_by_url(url):
         raise DarkException, _('Error string give from get id from monitor sites by url function! Please check it!')
     return None
 
+
+def create_blacklist_table():
+    sql = 'create table blacklist(blId INT AUTO_INCREMENT PRIMARY KEY, keyword VARCHAR(5) NOT NULL)'
+    try:
+        sqlMg.create(sql)
+    except Exception, e:
+        raise DarkException, _('Create blacklist table failed! Please check it! Exception: %s' % e)
+
+
+def create_whitelist_table():
+    sql = 'create table whitelist(wlId INT AUTO_INCREMENT PRIMARY KEY, domain VARCHAR(100) NOT NULL UNIQUE, domainTitle VARCHAR(80))'
+    try:
+        sqlMg.create(sql)
+    except Exception, e:
+        raise DarkException, _('Create whitelist table failed! Please check it! Exception: %s' % e)
+
+
+def create_detect_info_table():
+    sql = 'create table detectInfo(dtId INT AUTO_INCREMENT PRIMARY KEY, url VARCHAR(100) NOT NULL, hiddenUrl VARCHAR(500), hiddenLevel VARCHAR(10), hiddenType VARCHAR(25) )'
+    try:
+        sqlMg.create(sql)
+    except Exception, e:
+        raise DarkException, _('Create detectInfo table failed! Please check it! Exception: %s' % e)
+
+
 if __name__ == '__main__':
-    '''
-    sql = 'create table detectInfo(dtId INT AUTO_INCREMENT PRIMARY KEY, url VARCHAR(100) NOT NULL, hiddenUrl VARCHAR(500), hiddenLevel VARCHAR(6), hiddenType VARCHAR(25) )'
-    sqlMg.create(sql, ())
-    '''
+    #create_blacklist_table()
+    # create_whitelist_table()
+    create_detect_info_table()
     print get_id_from_monitor_sites_by_url('http://www.baidu.com')
     str = '博彩'
     print find_keyword_from_blacklist(str)
     str = 'www.baidu.com'
     print find_domain_from_whitelist(str)
-    store_url_hidden_type_to_detect_info('a','a','a','a')
+    store_url_hidden_type_to_detect_info('a', 'a', 'a', 'a')

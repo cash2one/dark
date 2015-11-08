@@ -5,7 +5,7 @@ __author__ = 'jason'
 import time
 import sys
 from core.snapshot.snapshot import Snapshot
-from core.database.DBItem import blacklist, whitelist, detectResult
+from core.database.mysqlExec import *
 from core.parser.htmlParser import html_object
 from core.parser.urlParser import url_object
 from core.parser.contentParser import content_obj
@@ -85,7 +85,11 @@ class Detect():
 
     def is_link_in_white_list(self, url):
         urlParser = url_object(url)
-        return whitelist.find_url_in(urlParser.getRootDomain)
+        try:
+            return find_domain_from_whitelist(urlParser.getRootDomain)
+        except DarkException, msg:
+            logger.error(msg)
+        return False
 
     '''
     描述： 判断当前链接是否是黑名单库中的关键字
@@ -96,10 +100,15 @@ class Detect():
             contentKeys = get_keylist_from_string(content)
         except DarkException, msg:
             logger.error(msg)
-        if blacklist.find_keyword_in(contentKeys):
-            return True
-        else:
-            return False
+        for content in contentKeys:
+            try:
+                if find_keyword_from_blacklist(content):
+                    return True
+                else:
+                    continue
+            except DarkException, msg:
+                logger.error(msg)
+        return False
 
     '''
     描述： 判断当前的链接中是否存在与当前检测链接相似，若相似，则返回False，表示不是暗链
@@ -309,9 +318,9 @@ class Detect():
                         url = element.get('href')
                         typeTuple = (self._curContent, 'High', suspectType)
                         self.insert_hiddenlink_into_set(url, typeTuple)
-        self.store_detect_snapshot()
+        self.store_detect_result()
 
-    def store_detect_snapshot(self):
+    def store_detect_result(self):
         if len(self.hiddenSet):
             # 保存快照
             fileText = self.htmlObj.html
@@ -322,11 +331,13 @@ class Detect():
                 logger.error(msg)
             # 将检测结果保存到数据库中
             for (k, v) in self.hiddenSet.items():
-                detectResult.store_url_hidden_type_in(self.url, k, v[0], v[1])
+                try:
+                    store_url_hidden_type_to_detect_info(self.url, k, v[0], v[1])
+                except DarkException, msg:
+                    logger.error(msg)
             logger.info('Finishing store detect result!')
         else:
             logger.info('No need to store detect result!')
-
 
 if __name__ == '__main__':
     from core.output.console import consoleLog

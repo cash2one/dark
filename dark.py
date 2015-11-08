@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-def dark_start(target, id):
-    from core.database.DBItem import detectResult, blacklist, whitelist, detectReport
+
+def dark_start(target):
+    from core.database.mysqlManger import sqlMg
     from hiddenDetect import hiddenlink_obj
     from core.output.console import consoleLog
     from core.output.textFile import fileLog
@@ -16,16 +17,13 @@ def dark_start(target, id):
         logger.setOutputPlugin(consoleLog)
 
     # 执行检测
-    hidden = hiddenlink_obj(target, id)
+    hidden = hiddenlink_obj(target)
     hidden.init()
     hidden.run()
     hidden.finsh()
 
     # 关闭相关数据库的连接和日志打印模块
-    blacklist.end()
-    whitelist.end()
-    detectReport.end()
-    detectResult.end()
+    sqlMg.dispose()
     logger.endLogging()
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ import sys
 import datetime
 from core.threads.threadManager import ThreadManager
 from core.detect import Detect
-from core.database.DBItem import detectResult, blacklist, whitelist, detectReport, monitorSites
+from core.database.mysqlExec import store_url_hidden_report_in_monitor_statistic, get_id_from_monitor_sites_by_url
 from core.profile.profile import pf
 from core.output.logging import logger
 from core.settings.settings import settings
@@ -50,12 +50,14 @@ class hiddenlink_obj():
 
         self.detectTM.setMaxThreads(10)     # 设置可以同时进行任务的个数
 
+        '''
         from sinbot import sinbot_start     # 引入sinbot_start方法
         from settings.settings import settings as st # 引入sinbot_settings方法
         st.set('DEPTH_LIMIT', settings.getint('DEPTH_LIMIT'))    # 设置检测层数, 此处设置为2表示3层，从0开始计数
         reqList = sinbot_start(self.url)      # 开始爬取结果
         self.urlList = get_url(reqList)    # 将爬取到的url结果保存到列表中
-
+        '''
+        self.urlList = ['http://www.kingboxs.com']
         logger.info('Detect modules complete initialization...')
 
     def oneTask(self, url):
@@ -116,11 +118,14 @@ class hiddenlink_obj():
         if threat_sum != 0:
             id = PKgenerator.getPrimaryKeyId()
             try:
-                ref_id = monitorSites.get_id_by_url_out(self.url)
+                ref_id = get_id_from_monitor_sites_by_url(self.url)
             except DarkException, msg:
                 logger.error(msg)
             else:
-                detectReport.store_url_hidden_report_in(id, ref_id, threat_name, threat_level, threat_sum ,stat_time, report_part_path)
+                try:
+                    store_url_hidden_report_in_monitor_statistic(id, ref_id, threat_name, threat_level, threat_sum ,stat_time, report_part_path)
+                except DarkException, msg:
+                    logger.error(msg)
 
     def finsh(self):
         logger.info('Detect modules finished, now will be quit...')
@@ -143,10 +148,4 @@ if __name__ == '__main__':
     hidden.init()
     hidden.run()
     hidden.finsh()
-
-     # 关闭相关数据库的连接
-    blacklist.end()
-    whitelist.end()
-    detectReport.end()
-    detectResult.end()
     logger.endLogging()
