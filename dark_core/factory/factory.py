@@ -12,7 +12,7 @@ Date: 20150806
 import sys
 import traceback
 
-from core.exception.DarkException import DarkException
+from dark_core.exception.DarkException import DarkException
 from i18n import _
 
 def factory(moduleName, className=None, *args, **kwargs):

@@ -5,16 +5,16 @@ __author__ = 'jason'
 import time
 import sys
 import datetime
-from core.threads.threadManager import ThreadManager
-from core.detect import Detect
-from core.database.mysqlExec import store_url_hidden_report_in_monitor_statistic, get_id_from_monitor_sites_by_url
-from core.profile.profile import pf
-from core.output.logging import logger
-from core.settings.settings import settings
-from core.htmlfile.html import HtmlFile
-from core.common import human_time
-from core.utils.pkgenerator import PKgenerator
-from core.exception.DarkException import DarkException
+from dark_core.threads.threadManager import ThreadManager
+from dark_core.detect import Detect
+from dark_core.database.mysqlExec import store_url_hidden_report_in_monitor_statistic, get_id_from_monitor_sites_by_url
+from dark_core.profile.profile import pf
+from dark_core.output.logging import logger
+from dark_core.settings.settings import settings
+from dark_core.htmlfile.html import HtmlFile
+from dark_core.common import human_time
+from dark_core.utils.pkgenerator import PKgenerator
+from dark_core.exception.DarkException import DarkException
 
 class hiddenlink_obj():
     def __init__(self, url):
@@ -50,14 +50,12 @@ class hiddenlink_obj():
 
         self.detectTM.setMaxThreads(10)     # 设置可以同时进行任务的个数
 
-        '''
+
         from sinbot import sinbot_start     # 引入sinbot_start方法
         from settings.settings import settings as st # 引入sinbot_settings方法
         st.set('DEPTH_LIMIT', settings.getint('DEPTH_LIMIT'))    # 设置检测层数, 此处设置为2表示3层，从0开始计数
         reqList = sinbot_start(self.url)      # 开始爬取结果
         self.urlList = get_url(reqList)    # 将爬取到的url结果保存到列表中
-        '''
-        self.urlList = ['http://www.kingboxs.com']
         logger.info('Detect modules complete initialization...')
 
     def oneTask(self, url):
@@ -133,8 +131,8 @@ class hiddenlink_obj():
         # 关闭日志模块
 
 if __name__ == '__main__':
-    from core.output.console import consoleLog
-    from core.output.textFile import fileLog
+    from dark_core.output.console import consoleLog
+    from dark_core.output.textFile import fileLog
 
         # 设置日志模块
     if pf.getLogType() == 'True':

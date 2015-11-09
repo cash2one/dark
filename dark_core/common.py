@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'jason'
 
-from core.exception.DarkException import DarkException
+from dark_core.exception.DarkException import DarkException
 from i18n import _
 import os
 

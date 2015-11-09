@@ -3,7 +3,7 @@
 __author__ = 'jason'
 
 import re
-from core.settings.settings import settings
+from dark_core.settings.settings import settings
 
 class Checker:
     def __init__(self, object):

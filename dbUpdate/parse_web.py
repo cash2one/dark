@@ -4,8 +4,8 @@ __author__ = 'jason'
 
 import chardet
 import sys
-from core.request import Requset
-from core.parser.urlParser import url_object
+from dark_core.request import Requset
+from dark_core.parser.urlParser import url_object
 
 class rebot_obj():
     def __init__(self):

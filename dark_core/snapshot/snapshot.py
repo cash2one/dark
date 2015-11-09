@@ -4,9 +4,9 @@ __author__ = 'jason'
 
 import os
 import codecs
-from core.exception.DarkException import DarkException
-from core.settings.settings import settings
-from core.parser.urlParser import url_object
+from dark_core.exception.DarkException import DarkException
+from dark_core.settings.settings import settings
+from dark_core.parser.urlParser import url_object
 from i18n import _
 
 

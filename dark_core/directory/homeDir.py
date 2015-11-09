@@ -14,7 +14,7 @@ import os
 import shutil
 import datetime
 
-from core.directory.localDir import get_local_dir
+from dark_core.directory.localDir import get_local_dir
 
 HOME_DIR = os.path.join(user.home,
                         '.dark_' + str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')))

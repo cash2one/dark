@@ -4,7 +4,7 @@ __author__ = 'jason'
 
 import sys
 import MySQLdb
-from core.parser.contentParser import content_obj
+from dark_core.parser.contentParser import content_obj
 
 reload(sys)
 sys.setdefaultencoding('utf-8')

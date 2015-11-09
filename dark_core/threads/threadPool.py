@@ -11,7 +11,7 @@ import time
 import Queue
 import threading
 import traceback
-from core.output.logging import logger
+from dark_core.output.logging import logger
 from i18n import _
 
 

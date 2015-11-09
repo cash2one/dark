@@ -6,8 +6,8 @@ import time
 import requests
 from requests.exceptions import ConnectionError, Timeout
 from socket import timeout
-from core.exception.DarkException import DarkException
-from core.output.logging import logger
+from dark_core.exception.DarkException import DarkException
+from dark_core.output.logging import logger
 from lxml import html as HTML
 from i18n import _
 

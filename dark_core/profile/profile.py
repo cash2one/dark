@@ -12,10 +12,10 @@ import ConfigParser
 import os
 import shutil
 
-from core.settings.settings import settings
-from core.exception.DarkException import DarkException
-from core.directory.homeDir import get_home_dir, create_home_dir
-from core.directory.localDir import get_local_dir
+from dark_core.settings.settings import settings
+from dark_core.exception.DarkException import DarkException
+from dark_core.directory.homeDir import get_home_dir, create_home_dir
+from dark_core.directory.localDir import get_local_dir
 from i18n import _
 
 class Profile:

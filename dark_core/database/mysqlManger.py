@@ -13,7 +13,7 @@ desc:数据库操作类
 import MySQLdb
 from MySQLdb.cursors import DictCursor
 from DBUtils.PooledDB import PooledDB
-from core.profile.profile import pf
+from dark_core.profile.profile import pf
 
 
 class DbManager(object):

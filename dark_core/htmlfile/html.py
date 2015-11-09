@@ -10,11 +10,11 @@ sys.setdefaultencoding('utf-8')
 import os
 import codecs
 import sys
-from core.output.logging import logger
-from core.settings.settings import settings
-from core.exception.DarkException import DarkException
-from core.parser.urlParser import url_object
-from core.directory.localDir import get_local_dir
+from dark_core.output.logging import logger
+from dark_core.settings.settings import settings
+from dark_core.exception.DarkException import DarkException
+from dark_core.parser.urlParser import url_object
+from dark_core.directory.localDir import get_local_dir
 from datetime import datetime
 from i18n import _
 

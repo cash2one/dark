@@ -16,7 +16,7 @@ db = url_detect
 
 
 [log]
-isTextPlugin = False
+isTextPlugin = True
 
 [spider]
 path = /root/project/leobot

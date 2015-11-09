@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>SANGFOR - WEB应用安全扫描报告</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<STYLE TYPE="text/css">
+html, body {
+	background:#f0f0f0;
+}
+body {
+	font-family:"Microsoft YaHei", Arial, "SimSun", Verdana, serif, sans-serif;
+	font-size:10pt;
+}
+ul, li, ol, dl, dt, dd {
+	margin:0;
+	padding:0;
+}
+h1, h2, h3 {
+	font-weight:300;
+}
+a {
+	color:#06C;
+}
+a:hover {
+	text-decoration: none;
+	color: #F26060;
+}
+#wrapper {
+	margin: 3.5em;
+	min-width: 780px;
+	padding:3em;
+	background:#fff;
+	box-shadow: 0 0 52px #ccc;
+}
+#header { padding-top:4em;
+}
+#header h1 {
+	font-size:36px;
+	color:#06C;
+}
+#header ul {
+	background:#eee;
+	width:48em;
+	display:block;
+	padding:4px;
+	border-radius:12px;
+	text-align:center;
+}
+#header li {
+	display:inline;
+	padding:0 1em;
+	margin:0;
+}
+.m {
+	margin-bottom:2.4em;
+}
+.m-h {
+}
+.m-h h2:before {
+	content:"::::::";
+	color:#666;
+	margin-right:.5em;
+}
+.m-h h2:after {
+	content:":::::::";
+	color:#666;
+	margin-left:.5em;
+}
+.c {
+	border-radius:6px;
+	overflow:hidden;
+	border:1px solid #ddd;
+	background:#f8f8f8;
+	margin-bottom:1.2em;
+}
+.c-t {
+}
+.c-t dt {
+	padding:.4em .6em;
+	font-size:1.2em;
+	color: #06C;
+}
+.c-t dt strong:before {
+	content:"※";
+	margin-right:.5em;
+}
+.c-t dd {
+	background:#fff;
+	margin:.5em;
+	padding:1.5em;
+	font-size:0.9em;
+	border-radius:6px;
+}
+.c-t dd strong{ line-height:2.4em; font-size:1.2em;}
+.c-l {
+	padding:0 .5em;
+}
+.c-item {
+	background:#fff;
+	padding:.5em; margin-bottom:.5em;
+	border-radius:6px;
+}
+.c-h {
+	padding:8px;
+	color: #C30;
+}
+.c-h h3 {
+	margin:0;
+	padding:0;
+	font-size:1.1em;
+	line-height:100%;
+}
+.c-h h3:before {
+	content:"◆";
+	margin-right:.5em;
+}
+.c-b{ padding-left:1em}
+.c-b dl {
+	padding:.2em 1em;
+	margin-bottom: 1em;
+	font-size:.9em;
+}
+.c-b dt, .c-b dd {
+	display:inline; margin-right:2em;
+}
+.c-b dt {
+	width:6em;
+}
+.quote {
+	padding:1em;
+	background:#FFC;
+	clear:both;
+	display:block;
+	border:1px dotted #FC6;
+	border-radius:6px;
+	margin:0 1em;
+}
+/*
+.leak .c{ background:#FDCAAF;}
+.leak .c-t dt{ background-color: #FB9660;}
+*/
+#wrapper{ position:relative; z-index:auto;}
+.tt{ display:block; position:absolute; width:100%; top:0; background:#009772; left:0;}
+.tt p{ margin:1em 0 0 0; padding:.6em 2.6em; color:#fff; background: #4B7BC2;}
+.c-b dd strong{ padding:2px 1em; color:#fff; border-radius:6px;}
+.high{ background:#C30;}
+.middle{ background:#F90;}
+.low{ background:#FC0}
+	</style>
+</head>
+<body>
+<div id="wrapper">
+	<div class="tt">
+		<p>深信服安全中心云扫描服务</p></div>
+	<div id="header">
+		<h1>WEB应用恶意内容扫描报告</h1>
+		<ul>
+			<li>目标网站：www.kingboxs.com</li>
+			<li>开始时间：2015-11-06 16:51:45</li>
+			<li>扫描时长：0小时0分41秒</li>
+		</ul>
+		<div class="tc">
+			<h2>经检测：</h2>
+			<p>发现该网站存在恶意网页（暗链|挂马|webshell），证明该网站已经遭到入侵。请尽快删除恶意网页或内容。</p>
+		</div>
+	</div>
+	<div class="body">
+		<!-- 重复性模块：开始 -->
+		<div class="m">
+			<div class="m-h">
+				<h2>恶意网页检测结果</h2>
+			</div>
+			<div class="m-b">
+				<div class="c">
+					<dl class="c-t">
+						<dt><strong>暗链（1）</strong></dt>
+						<dd> <strong>描述：</strong><br/>
+							暗链是指攻击者通过各种攻击手段向网站的正常网页中植入视觉上令人难以察觉的链接，这些链接往往是网游私服、医疗、博彩、色情，甚至是反动网站的网站链接。<br/>
+							<strong>修复建议：</strong><br/>
+							删除暗链代码，同时修复网站漏洞防止再次被植入暗链。
+						</dd>
+					</dl>
+					<div class="c-l">
+						<div class="c-item">
+							<div class="c-h">
+								<h3>恶意网页1/1</h3>
+							</div>
+							<div class="c-b">
+								<dl>
+									<dt>页面URL:</dt>
+									<dd><a href="http://www.kingboxs.com">发现"http://www.kingboxs.com"存在暗链</a></dd>
+								</dl>
+								<dl>
+									<dt>严重等级：</dt>
+									<dd><strong class="high">高</strong>
+								</dl>
+								<dl>
+									<dt>恶意内容：</dt>
+									<dd></dd>
+								</dl>
+								<code class="quote">
+									<li>链接：http://www.jlbeisheng.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.hzsophic.com/bcw/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.baisumall.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.baisumall.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.baseguest.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ironboxz.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ksmuchun.com/bocaiwangzhan/	内容：博彩网站	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.link-rich.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.lianhelawyers.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.taihechun.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.wangdianes.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.hzsophic.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ironboxz.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dexinwl.com/yulecheng/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.baseguest.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.link-rich.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.lianhelawyers.com/xianjinwang/	内容：现金网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.lianhelawyers.com/bcw/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.kmpingyun.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.missonli.com/bcw/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.cd-xinyu.com/gcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.watchsh.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.cd-xinyu.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dieya2010.com/ylc/	内容：澳门娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.cd-xinyu.com/ylc/	内容：澳门娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.zsrmoto.com/baijiale/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.zsrmoto.com/yulecheng/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.lygdkj.com/baijialekaihu/	内容：百家乐开户	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dreamhouselight.com/aomenyulecheng/	内容：澳门娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.hzsophic.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.link-rich.com/bct/	内容：博彩通	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.meigetel.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.lianhelawyers.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.watchsh.com/xianjinwang/	内容：现金网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ksmuchun.com/yulecheng/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.meigetel.com/gcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ljguanglin.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.baseguest.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.bb-tylgs.com/gcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.mymediasoft.com/baijialedaili/	内容：百家乐代理	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.njpaiyi.com/bocaiwang/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dieya2010.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ironboxz.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.mymediasoft.com/zhenrenyulecheng/	内容：真人娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.daliqiche.com/ylc/	内容：澳门娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dexinwl.com/bocaiwangzhan/	内容：博彩网站	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.nj-miaopu.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.zsrmoto.com/bocaiwang/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.lygdkj.com/百家乐代理/	内容：百家乐代理	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ljguanglin.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.xhbrush.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.linfuwood.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.wangdianes.com/xianjinwang/	内容：现金网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.watchsh.com/bcw/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.baisumall.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.jlbeisheng.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.nj-miaopu.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.linfuwood.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.bb-tylgs.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.bb-tylgs.com/ylc/	内容：澳门娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.nj-miaopu.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.daliqiche.com/gcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.watchsh.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dexinwl.com/baijiale/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dreamhouselight.com/wangshangzhenrenyule/	内容：网上真人娱乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.xhbrush.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dreamhouselight.com/aomenduchang/	内容：澳门赌场	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.mymediasoft.com/aomenbaijiale/	内容：澳门百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.hzsophic.com/xianjinwang/	内容：现金网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.kmpingyun.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.missonli.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dreamhouselight.com/zhenrenyulecheng/	内容：真人娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ljguanglin.com/ylc/	内容：娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.meigetel.com/ylc/	内容：澳门娱乐城	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.wangdianes.com/bcw/	内容：博彩网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.linfuwood.com/bct/	内容：博彩通	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.daliqiche.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.ksmuchun.com/baijiale/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.wangdianes.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.taihechun.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.taihechun.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.mymediasoft.com/baijialekaihu/	内容：百家乐开户	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.dieya2010.com/gcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.jlbeisheng.com/bcgs/	内容：博彩公司	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.kmpingyun.com/bct/	内容：博彩通	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.missonli.com/xianjinwang/	内容：现金网	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.xhbrush.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+									<li>链接：http://www.missonli.com/bjl/	内容：百家乐	等级：High	类型：Visible hidden</li>
+								</code>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

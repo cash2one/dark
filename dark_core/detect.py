@@ -4,14 +4,14 @@ __author__ = 'jason'
 
 import time
 import sys
-from core.snapshot.snapshot import Snapshot
-from core.database.mysqlExec import *
-from core.parser.htmlParser import html_object
-from core.parser.urlParser import url_object
-from core.parser.contentParser import content_obj
-from core.exception.DarkException import DarkException
-from core.settings.settings import settings
-from core.output.logging import logger
+from dark_core.snapshot.snapshot import Snapshot
+from dark_core.database.mysqlExec import *
+from dark_core.parser.htmlParser import html_object
+from dark_core.parser.urlParser import url_object
+from dark_core.parser.contentParser import content_obj
+from dark_core.exception.DarkException import DarkException
+from dark_core.settings.settings import settings
+from dark_core.output.logging import logger
 from request import Requset
 from checker import Checker
 from i18n import _
@@ -332,7 +332,7 @@ class Detect():
             # 将检测结果保存到数据库中
             for (k, v) in self.hiddenSet.items():
                 try:
-                    store_url_hidden_type_to_detect_info(self.url, k, v[0], v[1])
+                    store_url_hidden_type_to_detect_info(self.url, k, v[0], v[1], v[2])
                 except DarkException, msg:
                     logger.error(msg)
             logger.info('Finishing store detect result!')
@@ -340,7 +340,7 @@ class Detect():
             logger.info('No need to store detect result!')
 
 if __name__ == '__main__':
-    from core.output.console import consoleLog
+    from dark_core.output.console import consoleLog
     logger.setOutputPlugin(consoleLog)
     url = 'http://www.kingboxs.com/index.php?case=archive&act=search'
     hdDetect = Detect(url)

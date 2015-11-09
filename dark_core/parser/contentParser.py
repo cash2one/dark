@@ -6,7 +6,7 @@ import re
 import jieba
 import jieba.analyse
 from math import sqrt
-from core.exception.DarkException import DarkException
+from dark_core.exception.DarkException import DarkException
 from i18n import _
 
 

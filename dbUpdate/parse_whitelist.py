@@ -4,7 +4,7 @@ __author__ = 'jason'
 
 import sys,os
 import MySQLdb
-from core.request import Requset
+from dark_core.request import Requset
 from parse_web import rebot_obj
 
 

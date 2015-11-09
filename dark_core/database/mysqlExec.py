@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'jason'
 
-from core.database.mysqlManger import sqlMg
-from core.exception.DarkException import DarkException
+from dark_core.database.mysqlManger import sqlMg
+from dark_core.exception.DarkException import DarkException
 from i18n import _
 
 
@@ -35,10 +35,10 @@ def find_domain_from_whitelist(string):
     return False
 
 
-def store_url_hidden_type_to_detect_info(url, hidden, level, type):
+def store_url_hidden_type_to_detect_info(url, hidden, content, level, type):
     if url:
-        sql = 'insert into detectInfo(url, hiddenUrl, hiddenLevel, hiddenType) values(%s, %s, %s, %s)'
-        param = (url, hidden, level, type)
+        sql = 'replace into detectInfo(url, hiddenUrl, hiddenContent, hiddenLevel, hiddenType) values(%s, %s, %s, %s, %s)'
+        param = (url, hidden, content, level, type)
         sqlMg.insert_one(sql, param)
         sqlMg.end()
     else:
@@ -66,7 +66,7 @@ def get_id_from_monitor_sites_by_url(url):
 
 
 def create_blacklist_table():
-    sql = 'create table blacklist(blId INT AUTO_INCREMENT PRIMARY KEY, keyword VARCHAR(5) NOT NULL)'
+    sql = 'create table blacklist(blId INT AUTO_INCREMENT PRIMARY KEY, keyword VARCHAR(5) NOT NULL) DEFAULT CHARSET=UTF8'
     try:
         sqlMg.create(sql)
     except Exception, e:
@@ -74,7 +74,7 @@ def create_blacklist_table():
 
 
 def create_whitelist_table():
-    sql = 'create table whitelist(wlId INT AUTO_INCREMENT PRIMARY KEY, domain VARCHAR(100) NOT NULL UNIQUE, domainTitle VARCHAR(80))'
+    sql = 'create table whitelist(wlId INT AUTO_INCREMENT PRIMARY KEY, domain VARCHAR(100) NOT NULL UNIQUE, domainTitle VARCHAR(80)) DEFAULT CHARSET=UTF8'
     try:
         sqlMg.create(sql)
     except Exception, e:
@@ -82,7 +82,7 @@ def create_whitelist_table():
 
 
 def create_detect_info_table():
-    sql = 'create table detectInfo(dtId INT AUTO_INCREMENT PRIMARY KEY, url VARCHAR(100) NOT NULL, hiddenUrl VARCHAR(500), hiddenLevel VARCHAR(10), hiddenType VARCHAR(25) )'
+    sql = 'create table detectInfo(dtId INT AUTO_INCREMENT PRIMARY KEY, url VARCHAR(100) NOT NULL, hiddenUrl VARCHAR(500), hiddenContent VARCHAR(50), hiddenLevel VARCHAR(10), hiddenType VARCHAR(25)) DEFAULT CHARSET=UTF8'
     try:
         sqlMg.create(sql)
     except Exception, e:
@@ -98,4 +98,3 @@ if __name__ == '__main__':
     print find_keyword_from_blacklist(str)
     str = 'www.baidu.com'
     print find_domain_from_whitelist(str)
-    store_url_hidden_type_to_detect_info('a', 'a', 'a', 'a')

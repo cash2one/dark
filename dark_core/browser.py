@@ -3,8 +3,8 @@
 __author__ = 'jason'
 
 from splinter import Browser
-from core.settings.settings import settings
-from core.output.logging import logger
+from dark_core.settings.settings import settings
+from dark_core.output.logging import logger
 
 DEBUG = True
 

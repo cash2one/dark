@@ -7,8 +7,8 @@ Date: 20150925
 
 线程管理。
 '''
-from core.threads.threadPool import ThreadPool, WorkTask
-from core.settings.settings import settings
+from dark_core.threads.threadPool import ThreadPool, WorkTask
+from dark_core.settings.settings import settings
 
 
 class ThreadManager(object):

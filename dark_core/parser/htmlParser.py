@@ -4,12 +4,12 @@ __author__ = 'jason'
 
 import re
 import time
-from core.parser.urlParser import url_object
-from core.browser import MyBrowser
-from core.request import Requset
-from core.exception.DarkException import DarkException
-from core.settings.settings import settings
-from core.output.logging import logger
+from dark_core.parser.urlParser import url_object
+from dark_core.browser import MyBrowser
+from dark_core.request import Requset
+from dark_core.exception.DarkException import DarkException
+from dark_core.settings.settings import settings
+from dark_core.output.logging import logger
 from lxml import html as HTML
 from bs4 import BeautifulSoup
 from i18n import _
@@ -350,7 +350,7 @@ class html_object():
 
 
 if __name__ == '__main__':
-    from core.output.console import consoleLog
+    from dark_core.output.console import consoleLog
     logger.setOutputPlugin(consoleLog)
     url = "http://www.dtzwdt.gov.cn/"
     htObj = html_object(url)

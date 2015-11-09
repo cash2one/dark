@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import time
-from core.settings.settings import settings
+from dark_core.settings.settings import settings
 
 
 class FileLog(object):
     def __init__(self):
-        file_name = settings.get("LOG_FILE")
-        self._file = open(file_name, "a")
+        pass
+
+    def set_file_name(self, name):
+        self._file = open(name, "a")
 
     def output(self, args):
         '''
